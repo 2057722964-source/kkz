@@ -69,6 +69,7 @@
             box-shadow: 0 4px 15px rgba(255, 107, 147, 0.2);
             border: 1px solid rgba(255, 107, 147, 0.3);
             animation: textFloat 4s ease-in-out infinite;
+            z-index: 5;
         }
         
         @keyframes textFloat {
@@ -282,6 +283,7 @@
             transform: rotate(45deg);
             opacity: 0;
             pointer-events: none;
+            z-index: 5;
         }
         
         .heart:before, .heart:after {
@@ -343,14 +345,14 @@
             </div>
         </div>
        
-        <button id="music-toggle">🔊 停止音乐</button>
+        <button id="music-toggle">🔇 播放音乐</button>
         <div id="click-hint">点击页面任意位置开始体验</div>
         <div id="loading-message">音乐加载中...</div>
         <div id="error-message"></div>
        
-        <!-- 使用可靠的音乐源 -->
-        <audio id="background-music" loop preload="auto">
-            <source src="https://assets.mixkit.co/music/preview/mixkit-gently-romantic-piano-578.mp3" type="audio/mpeg">
+        <!-- 使用更可靠的音乐源 -->
+        <audio id="background-music" loop preload="metadata">
+            <source src="https://cdn.pixabay.com/download/audio/2022/11/02/audio_eb11f97d98.mp3?filename=soft-piano-ambient-184253.mp3" type="audio/mpeg">
             您的浏览器不支持音频元素。
         </audio>
     </div>
@@ -429,6 +431,7 @@
         let userInteracted = false;
         let musicLoaded = false;
         let heartsInterval;
+        let catBlinkInterval;
 
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
@@ -454,8 +457,8 @@
             document.getElementById('no-btn').addEventListener('click', onNoClicked);
             document.getElementById('music-toggle').addEventListener('click', toggleMusic);
            
-            // 预加载音乐并自动播放
-            preloadAndPlayMusic();
+            // 预加载音乐
+            preloadMusic();
            
             // 初始调整布局
             adjustLayout();
@@ -487,35 +490,28 @@
             backgroundMusic.addEventListener('canplay', function() {
                 hideLoading();
                 musicLoaded = true;
+                showError('音乐加载成功！点击播放按钮开始播放', 'success');
+            });
+           
+            backgroundMusic.addEventListener('canplaythrough', function() {
+                hideLoading();
+                musicLoaded = true;
             });
            
             backgroundMusic.addEventListener('error', function(e) {
                 hideLoading();
                 musicLoaded = false;
-                showError('音乐加载失败，请检查网络连接');
+                showError('音乐加载失败，请刷新页面重试');
             });
         }
 
-        // 预加载并自动播放音乐
-        function preloadAndPlayMusic() {
-            backgroundMusic.volume = 0.7;
-            
-            // 设置自动播放
-            const playPromise = backgroundMusic.play();
-            
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    // 自动播放成功
-                    isMusicPlaying = true;
-                    document.getElementById('music-toggle').innerHTML = '🔊 停止音乐';
-                    hideLoading();
-                }).catch(error => {
-                    // 自动播放被阻止，需要用户交互
-                    hideLoading();
-                    showError('请点击页面任意位置开始播放音乐');
-                    userInteracted = false; // 重置交互状态
-                });
-            }
+        // 预加载音乐
+        function preloadMusic() {
+            backgroundMusic.volume = 0.5;
+            // 使用更可靠的方式加载音乐
+            setTimeout(() => {
+                backgroundMusic.load();
+            }, 500);
         }
 
         // 显示加载信息
@@ -549,11 +545,6 @@
                 if (!userInteracted) {
                     userInteracted = true;
                     document.getElementById('click-hint').style.display = 'none';
-                    
-                    // 如果音乐还没播放，现在播放
-                    if (!isMusicPlaying && musicLoaded) {
-                        playMusic();
-                    }
                     
                     startShowingSentences();
                     startCatBlinking();
@@ -626,22 +617,36 @@
             textElement.className = 'floating-text';
             textElement.textContent = text + "  (=^･ω･^=)";
            
-            // 随机位置，避开小猫区域
-            let x, y;
+            // 更好的位置计算，完全避开小猫区域
             const catRect = document.getElementById('cat').getBoundingClientRect();
+            const safeMargin = 120; // 增加安全边距
+           
             const catArea = {
-                left: catRect.left - 80,
-                top: catRect.top - 60,
-                right: catRect.right + 80,
-                bottom: catRect.bottom + 60
+                left: catRect.left - safeMargin,
+                top: catRect.top - safeMargin,
+                right: catRect.right + safeMargin,
+                bottom: catRect.bottom + safeMargin
             };
            
             let attempts = 0;
+            let x, y;
             do {
-                x = Math.random() * (window.innerWidth - 200) + 50;
-                y = Math.random() * (window.innerHeight - 100) + 50;
+                x = Math.random() * (window.innerWidth - 300) + 50;
+                y = Math.random() * (window.innerHeight - 150) + 50;
                 attempts++;
-                if (attempts > 50) break; // 防止无限循环
+                if (attempts > 100) {
+                    // 如果尝试次数过多，强制放在屏幕边缘
+                    const edges = [
+                        { x: 50, y: Math.random() * (window.innerHeight - 150) + 50 }, // 左边缘
+                        { x: window.innerWidth - 300, y: Math.random() * (window.innerHeight - 150) + 50 }, // 右边缘
+                        { x: Math.random() * (window.innerWidth - 300) + 50, y: 50 }, // 上边缘
+                        { x: Math.random() * (window.innerWidth - 300) + 50, y: window.innerHeight - 150 } // 下边缘
+                    ];
+                    const edgePos = edges[Math.floor(Math.random() * edges.length)];
+                    x = edgePos.x;
+                    y = edgePos.y;
+                    break;
+                }
             } while (
                 x > catArea.left && x < catArea.right &&
                 y > catArea.top && y < catArea.bottom
@@ -670,13 +675,20 @@
 
         // 小猫眨眼动画
         function startCatBlinking() {
-            setInterval(() => {
+            // 清除之前的间隔（如果有）
+            if (catBlinkInterval) {
+                clearInterval(catBlinkInterval);
+            }
+            
+            catBlinkInterval = setInterval(() => {
                 const cat = document.getElementById('cat');
                 if (cat.textContent === catStates.normal &&
                     document.getElementById('question-container').style.display !== 'flex') {
                     cat.textContent = catStates.blink;
                     setTimeout(() => {
-                        cat.textContent = catStates.normal;
+                        if (cat.textContent === catStates.blink) {
+                            cat.textContent = catStates.normal;
+                        }
                     }, 200);
                 }
             }, 2000);
@@ -686,6 +698,11 @@
         function showQuestion() {
             const cat = document.getElementById('cat');
             const questionContainer = document.getElementById('question-container');
+           
+            // 停止眨眼动画
+            if (catBlinkInterval) {
+                clearInterval(catBlinkInterval);
+            }
            
             // 移动小猫到上方
             const catX = window.innerWidth / 2;
@@ -784,17 +801,24 @@
         // 播放音乐
         function playMusic() {
             if (backgroundMusic && musicLoaded) {
+                showLoading('准备播放音乐...');
+               
                 const playPromise = backgroundMusic.play();
                
                 if (playPromise !== undefined) {
                     playPromise.then(() => {
                         isMusicPlaying = true;
                         document.getElementById('music-toggle').innerHTML = '🔊 停止音乐';
+                        hideLoading();
+                        showError('音乐播放成功！', 'success');
                     }).catch(error => {
-                        showError('播放失败: ' + error.message);
+                        hideLoading();
+                        showError('播放失败: 请点击页面任意位置后重试');
                         isMusicPlaying = false;
                     });
                 }
+            } else {
+                showError('音乐尚未加载完成，请稍后重试');
             }
         }
 
