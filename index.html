@@ -10,7 +10,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+       
         body {
             font-family: 'Microsoft YaHei', sans-serif;
             background-color: white;
@@ -19,14 +19,15 @@
             width: 100vw;
             position: relative;
             color: #ffb6c1;
+            cursor: pointer;
         }
-        
+       
         #container {
             position: relative;
             width: 100%;
-            height: 100%;
+           
         }
-        
+       
         #cat {
             position: absolute;
             top: 50%;
@@ -40,7 +41,7 @@
             z-index: 10;
             transition: all 1s ease;
         }
-        
+       
         .floating-text {
             position: absolute;
             font-size: 24px;
@@ -53,34 +54,38 @@
             border-radius: 10px;
             max-width: 400px;
             word-wrap: break-word;
+            pointer-events: none;
         }
-        
+       
         #question-container {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
+           
             display: none;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
             z-index: 20;
             background-color: white;
+            padding-top: 50px;
         }
-        
+       
         #question {
             font-size: 36px;
             font-weight: bold;
             margin-bottom: 50px;
             text-align: center;
+            margin-top: 150px;
         }
-        
+       
         .buttons {
             display: flex;
             gap: 30px;
+            margin-top: 30px;
         }
-        
+       
         .btn {
             padding: 15px 40px;
             font-size: 28px;
@@ -92,11 +97,11 @@
             color: white;
             background-color: #ffb6c1;
         }
-        
+       
         .btn:hover {
             transform: scale(1.05);
         }
-        
+       
         #music-toggle {
             position: absolute;
             bottom: 20px;
@@ -109,14 +114,72 @@
             cursor: pointer;
             z-index: 30;
         }
+       
+        #click-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: #ffb6c1;
+            font-size: 14px;
+            z-index: 30;
+        }
+
+        #loading-message {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ffb6c1;
+            font-size: 16px;
+            z-index: 30;
+            display: none;
+        }
+
+        /* 自定义弹窗样式 */
+        .custom-alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 182, 193, 0.3);
+            text-align: center;
+            z-index: 1000;
+            border: 3px solid #ffb6c1;
+            min-width: 300px;
+        }
+       
+        .custom-alert h3 {
+            color: #ffb6c1;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+       
+        .custom-alert p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+       
+        .custom-alert button {
+            background: #ffb6c1;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
     </style>
 </head>
 <body>
     <div id="container">
         <pre id="cat">           /\_/\  
-          ( o.o ) 
+          ( o.o )
            > ^ <  </pre>
-        
+       
         <div id="question-container">
             <div id="question">能不能请你做我的对象？</div>
             <div class="buttons">
@@ -124,8 +187,16 @@
                 <button id="no-btn" class="btn">不愿意</button>
             </div>
         </div>
-        
-        <button id="music-toggle">播放音乐</button>
+       
+        <button id="music-toggle">🔇 点击播放音乐</button>
+        <div id="click-hint">点击页面任意位置开始</div>
+        <div id="loading-message">音乐加载中...</div>
+       
+        <!-- 隐藏的音频元素 - 使用您的自定义音乐 -->
+        <audio id="background-music" loop preload="auto">
+            <source src="https://github.com/2057722964-source/kkz/blob/main/gift.mp3?raw=true" type="audio/mpeg">
+            您的浏览器不支持音频元素。
+        </audio>
     </div>
 
     <script>
@@ -183,26 +254,52 @@
         // 全局变量
         let displayedSentences = 0;
         let noButtonClicks = 0;
-        let audioContext;
         let backgroundMusic;
         let isMusicPlaying = false;
+        let userInteracted = false;
 
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
+            // 获取音频元素
+            backgroundMusic = document.getElementById('background-music');
+           
+            // 设置音乐加载事件
+            backgroundMusic.addEventListener('loadstart', function() {
+                document.getElementById('loading-message').style.display = 'block';
+            });
+           
+            backgroundMusic.addEventListener('canplay', function() {
+                document.getElementById('loading-message').style.display = 'none';
+            });
+           
             // 随机打乱句子顺序
             shuffleArray(sentences);
-            
-            // 开始显示句子
-            startShowingSentences();
-            
-            // 小猫眨眼动画
-            startCatBlinking();
-            
+           
+            // 设置用户交互监听
+            setupUserInteraction();
+           
             // 设置按钮事件
             document.getElementById('yes-btn').addEventListener('click', onYesClicked);
             document.getElementById('no-btn').addEventListener('click', onNoClicked);
             document.getElementById('music-toggle').addEventListener('click', toggleMusic);
         });
+
+        // 设置用户交互监听
+        function setupUserInteraction() {
+            // 页面点击事件 - 解决自动播放限制
+            document.body.addEventListener('click', function() {
+                if (!userInteracted) {
+                    userInteracted = true;
+                    document.getElementById('click-hint').style.display = 'none';
+                   
+                    // 开始显示句子
+                    startShowingSentences();
+                   
+                    // 小猫眨眼动画
+                    startCatBlinking();
+                }
+            });
+        }
 
         // 打乱数组
         function shuffleArray(array) {
@@ -231,7 +328,7 @@
             const textElement = document.createElement('div');
             textElement.className = 'floating-text';
             textElement.textContent = text + "  (=^･ω･^=)";
-            
+           
             // 随机位置，避开小猫区域
             let x, y;
             const catRect = document.getElementById('cat').getBoundingClientRect();
@@ -241,7 +338,7 @@
                 right: catRect.right + 80,
                 bottom: catRect.bottom + 60
             };
-            
+           
             do {
                 x = Math.random() * (window.innerWidth - 300) + 50;
                 y = Math.random() * (window.innerHeight - 100) + 50;
@@ -249,22 +346,24 @@
                 x > catArea.left && x < catArea.right &&
                 y > catArea.top && y < catArea.bottom
             );
-            
+           
             textElement.style.left = `${x}px`;
             textElement.style.top = `${y}px`;
-            
+           
             container.appendChild(textElement);
-            
+           
             // 淡入动画
             setTimeout(() => {
                 textElement.style.opacity = '1';
             }, 10);
-            
+           
             // 淡出并移除
             setTimeout(() => {
                 textElement.style.opacity = '0';
                 setTimeout(() => {
-                    container.removeChild(textElement);
+                    if (textElement.parentNode) {
+                        container.removeChild(textElement);
+                    }
                 }, 500);
             }, 3000);
         }
@@ -273,7 +372,7 @@
         function startCatBlinking() {
             setInterval(() => {
                 const cat = document.getElementById('cat');
-                if (cat.textContent === catStates.normal) {
+                if (cat.textContent === catStates.normal && !document.getElementById('question-container').style.display === 'flex') {
                     cat.textContent = catStates.blink;
                     setTimeout(() => {
                         cat.textContent = catStates.normal;
@@ -286,32 +385,76 @@
         function showQuestion() {
             const cat = document.getElementById('cat');
             const questionContainer = document.getElementById('question-container');
-            
-            // 移动小猫到上方
-            cat.style.top = '100px';
-            cat.style.transform = 'translateX(-50%)';
+           
+            // 移动小猫到上方 - 使用更可靠的计算方法
+            const catWidth = 600;
+            const catHeight = 200;
+            const catX = (window.innerWidth - catWidth) / 2;
+            const catY = 100;
+           
+            cat.style.width = `${catWidth}px`;
+            cat.style.height = `${catHeight}px`;
+            cat.style.left = `${catX}px`;
+            cat.style.top = `${catY}px`;
+            cat.style.transform = 'none';
             cat.style.fontSize = '20px';
-            
+            cat.style.textAlign = 'center';
+           
             // 显示问题
             setTimeout(() => {
                 questionContainer.style.display = 'flex';
+                // 确保小猫仍然可见
+                cat.style.zIndex = '25';
             }, 1000);
         }
 
-        // 愿意按钮点击事件
+        // 愿意按钮点击事件 - 修改后的版本
         function onYesClicked() {
             const cat = document.getElementById('cat');
-            
+           
             // 小猫眨眼
             cat.textContent = catStates.blink;
+           
             setTimeout(() => {
                 cat.textContent = catStates.normal;
-                
-                // 显示成功消息
+               
+                // 显示自定义弹窗
+                showCustomAlert();
+            }, 500);
+        }
+
+        // 显示自定义弹窗
+        function showCustomAlert() {
+            // 创建弹窗元素
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'custom-alert';
+            alertDiv.innerHTML = `
+                <h3>🎉 太棒了！</h3>
+                <p>太好了！谢谢你愿意！</p>
+                <p><small>页面将在3秒后自动关闭...</small></p>
+                <button onclick="closePage()">立即关闭</button>
+            `;
+           
+            document.body.appendChild(alertDiv);
+           
+            // 3秒后自动关闭页面
+            setTimeout(closePage, 3000);
+        }
+
+        // 关闭页面函数
+        function closePage() {
+            // 先停止音乐
+            stopMusic();
+           
+            // 延迟一下确保音乐停止，然后关闭窗口
+            setTimeout(() => {
+                // 尝试关闭窗口（在大多数浏览器中有效）
+                window.close();
+               
+                // 如果无法关闭窗口，则重定向到空白页
                 setTimeout(() => {
-                    alert('太好了！谢谢你愿意！');
-                    // 这里可以添加更多结束逻辑
-                }, 300);
+                    window.location.href = 'about:blank';
+                }, 100);
             }, 500);
         }
 
@@ -321,64 +464,75 @@
             const noBtn = document.getElementById('no-btn');
             const yesBtn = document.getElementById('yes-btn');
             const cat = document.getElementById('cat');
-            
+           
             // 小猫哭泣
             cat.textContent = catStates.sad;
-            
+           
             if (noButtonClicks >= 3) {
                 // 移除不愿意按钮
                 noBtn.style.display = 'none';
             } else {
                 // 缩小不愿意按钮
-                const currentWidth = parseInt(getComputedStyle(noBtn).width);
-                const currentHeight = parseInt(getComputedStyle(noBtn).height);
-                const currentFontSize = parseInt(getComputedStyle(noBtn).fontSize);
-                
-                noBtn.style.width = `${currentWidth * 0.7}px`;
-                noBtn.style.height = `${currentHeight * 0.7}px`;
-                noBtn.style.fontSize = `${currentFontSize * 0.7}px`;
-                
-                // 放大愿意按钮
-                const yesWidth = parseInt(getComputedStyle(yesBtn).width);
-                const yesHeight = parseInt(getComputedStyle(yesBtn).height);
-                const yesFontSize = parseInt(getComputedStyle(yesBtn).fontSize);
-                
-                yesBtn.style.width = `${yesWidth * 1.3}px`;
-                yesBtn.style.height = `${yesHeight * 1.3}px`;
-                yesBtn.style.fontSize = `${yesFontSize * 1.3}px`;
+                const currentScale = Math.pow(0.7, noButtonClicks);
+                const yesScale = Math.pow(1.3, noButtonClicks);
+               
+                noBtn.style.transform = `scale(${currentScale})`;
+                yesBtn.style.transform = `scale(${yesScale})`;
             }
         }
 
         // 切换音乐
         function toggleMusic() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            if (!userInteracted) {
+                // 触发用户交互
+                document.body.click();
+                return;
             }
-            
+           
             if (!isMusicPlaying) {
-                // 创建简单的背景音乐（使用振荡器模拟）
-                backgroundMusic = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                
-                backgroundMusic.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                backgroundMusic.type = 'sine';
-                backgroundMusic.frequency.value = 440;
-                
-                gainNode.gain.value = 0.1;
-                
-                backgroundMusic.start();
-                isMusicPlaying = true;
-                document.getElementById('music-toggle').textContent = '停止音乐';
+                playMusic();
             } else {
-                if (backgroundMusic) {
-                    backgroundMusic.stop();
-                }
-                isMusicPlaying = false;
-                document.getElementById('music-toggle').textContent = '播放音乐';
+                stopMusic();
             }
         }
+
+        // 播放音乐
+        function playMusic() {
+            if (backgroundMusic) {
+                // 显示加载提示
+                document.getElementById('loading-message').style.display = 'block';
+               
+                backgroundMusic.play().then(() => {
+                    isMusicPlaying = true;
+                    document.getElementById('music-toggle').innerHTML = '🔊 停止音乐';
+                    document.getElementById('loading-message').style.display = 'none';
+                }).catch(error => {
+                    console.log('音乐播放失败:', error);
+                    document.getElementById('loading-message').style.display = 'none';
+                    alert('请点击页面任意位置后重试播放音乐');
+                });
+            }
+        }
+
+        // 停止音乐
+        function stopMusic() {
+            if (backgroundMusic) {
+                backgroundMusic.pause();
+                backgroundMusic.currentTime = 0;
+            }
+            isMusicPlaying = false;
+            document.getElementById('music-toggle').innerHTML = '🔇 播放音乐';
+        }
+
+        // 窗口大小变化时重新计算布局
+        window.addEventListener('resize', function() {
+            if (document.getElementById('question-container').style.display === 'flex') {
+                showQuestion(); // 重新计算布局
+            }
+        });
+
+        // 使closePage函数在全局可访问
+        window.closePage = closePage;
     </script>
 </body>
 </html>
