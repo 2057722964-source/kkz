@@ -33,28 +33,32 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-family: monospace;
-            font-size: 24px;
+            font-family: 'Courier New', monospace;
             font-weight: bold;
             white-space: pre;
             text-align: center;
             z-index: 10;
             transition: all 1s ease;
+            /* 自适应字体大小 */
+            font-size: min(4vw, 24px);
+            line-height: 1.2;
         }
        
         .floating-text {
             position: absolute;
-            font-size: 24px;
+            font-size: min(3vw, 20px);
             font-weight: bold;
             color: #ffb6c1;
             text-align: center;
             opacity: 0;
             transition: opacity 0.5s ease;
-            padding: 15px 25px;
+            padding: min(2vw, 15px) min(3vw, 25px);
             border-radius: 10px;
-            max-width: 400px;
+            max-width: min(80vw, 400px);
             word-wrap: break-word;
             pointer-events: none;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(5px);
         }
        
         #question-container {
@@ -66,29 +70,31 @@
             display: none;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
             z-index: 20;
             background-color: white;
-            padding-top: 50px;
+            padding-top: min(10vh, 100px);
         }
        
         #question {
-            font-size: 36px;
+            font-size: min(5vw, 36px);
             font-weight: bold;
-            margin-bottom: 50px;
+            margin-bottom: min(5vh, 50px);
             text-align: center;
-            margin-top: 150px;
+            margin-top: min(20vh, 200px);
+            padding: 0 20px;
         }
        
         .buttons {
             display: flex;
-            gap: 30px;
-            margin-top: 30px;
+            gap: min(4vw, 30px);
+            margin-top: min(4vh, 30px);
+            flex-wrap: wrap;
+            justify-content: center;
         }
        
         .btn {
-            padding: 15px 40px;
-            font-size: 28px;
+            padding: min(2vh, 15px) min(4vw, 40px);
+            font-size: min(3vw, 28px);
             font-weight: bold;
             border: none;
             border-radius: 10px;
@@ -96,10 +102,12 @@
             transition: all 0.3s ease;
             color: white;
             background-color: #ffb6c1;
+            min-width: min(30vw, 150px);
         }
        
         .btn:hover {
             transform: scale(1.05);
+            background-color: #ff91a4;
         }
        
         #music-toggle {
@@ -113,6 +121,7 @@
             border-radius: 5px;
             cursor: pointer;
             z-index: 30;
+            font-size: min(2vw, 14px);
         }
        
         #click-hint {
@@ -120,7 +129,7 @@
             bottom: 20px;
             left: 20px;
             color: #ffb6c1;
-            font-size: 14px;
+            font-size: min(2vw, 14px);
             z-index: 30;
         }
 
@@ -130,24 +139,44 @@
             left: 50%;
             transform: translateX(-50%);
             color: #ffb6c1;
-            font-size: 16px;
+            font-size: min(2.5vw, 16px);
             z-index: 30;
             display: none;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: 1px solid #ffb6c1;
         }
 
         #error-message {
             position: absolute;
-            top: 50px;
+            top: 60px;
             left: 50%;
             transform: translateX(-50%);
             color: #ff6b6b;
-            font-size: 14px;
+            font-size: min(2.5vw, 14px);
             z-index: 30;
             display: none;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             padding: 10px 20px;
             border-radius: 5px;
             border: 1px solid #ff6b6b;
+            text-align: center;
+            max-width: 90vw;
+        }
+
+        #music-alternative {
+            position: absolute;
+            bottom: 60px;
+            right: 20px;
+            padding: 8px 12px;
+            background-color: #ffb6c1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 30;
+            font-size: min(1.8vw, 12px);
         }
 
         /* 自定义弹窗样式 */
@@ -157,25 +186,26 @@
             left: 50%;
             transform: translate(-50%, -50%);
             background: white;
-            padding: 30px;
+            padding: min(4vw, 30px);
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(255, 182, 193, 0.3);
             text-align: center;
             z-index: 1000;
             border: 3px solid #ffb6c1;
-            min-width: 300px;
+            min-width: min(80vw, 300px);
+            max-width: 90vw;
         }
        
         .custom-alert h3 {
             color: #ffb6c1;
             margin-bottom: 15px;
-            font-size: 24px;
+            font-size: min(4vw, 24px);
         }
        
         .custom-alert p {
             color: #666;
             margin-bottom: 20px;
-            font-size: 18px;
+            font-size: min(3vw, 18px);
         }
        
         .custom-alert button {
@@ -185,7 +215,34 @@
             padding: 10px 20px;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: min(2.5vw, 16px);
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 768px) {
+            .buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+           
+            .btn {
+                width: min(60vw, 200px);
+            }
+           
+            #cat {
+                font-size: min(5vw, 20px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            #question {
+                margin-top: min(15vh, 150px);
+                font-size: min(6vw, 28px);
+            }
+           
+            #cat {
+                font-size: min(6vw, 18px);
+            }
         }
     </style>
 </head>
@@ -204,16 +261,17 @@
         </div>
        
         <button id="music-toggle">🔇 点击播放音乐</button>
-        <div id="click-hint">点击页面任意位置开始</div>
+        <button id="music-alternative" style="display: none;">🎵 使用备用音乐</button>
+        <div id="click-hint">点击页面任意位置开始体验</div>
         <div id="loading-message">音乐加载中...</div>
         <div id="error-message"></div>
        
-        <!-- 隐藏的音频元素 - 使用正确的GitHub原始文件链接 -->
+        <!-- 音频元素 -->
         <audio id="background-music" loop preload="auto">
             <!-- 主要音乐源 -->
             <source src="https://raw.githubusercontent.com/2057722964-source/kkz/main/gift.mp3" type="audio/mpeg">
             <!-- 备用音乐源 -->
-            <source src="https://cdn.jsdelivr.net/gh/2057722964-source/kkz/gift.mp3" type="audio/mpeg">
+            <source src="https://assets.mixkit.co/music/preview/mixkit-gently-romantic-piano-578.mp3" type="audio/mpeg">
             您的浏览器不支持音频元素。
         </audio>
     </div>
@@ -240,27 +298,7 @@
             "你若发光，我就在旁边戴墨镜欣赏。",
             "我不急于表白，只想做你生活里的一颗小安定。",
             "每次见到你，我都很想问一句：你刚好好吗？",
-            "我喜欢你，就像喜欢冬天的暖阳，悄悄地来了。",
-            "每一个努力的今天，都会在未来闪闪发光。",
-            "别忘了，你比你想象的还要强大。",
-            "失败并不可怕，可怕的是放弃尝试。",
-            "哪怕慢一点，也比停在原地好。",
-            "你已经走过很多路，别停在这里，继续前进。",
-            "把握住现在，你就是未来的自己在等你。",
-            "今天的汗水，是明天成功的光芒。",
-            "即使前路未知，也不要停止出发。",
-            "你值得所有美好，也值得被温柔以待。",
-            "抬头看看天，它比你想象的更宽更明亮。",
-            "今天要努力哦",
-            "明天还会再见吗",
-            "好好爱自己",
-            "别害怕未来",
-            "阳光总会再次照进来",
-            "相信一切都会变好",
-            "你已经很棒了",
-            "继续加油吧",
-            "别忘了微笑",
-            "一切都值得"
+            "我喜欢你，就像喜欢冬天的暖阳，悄悄地来了。"
         ];
 
         // 小猫状态
@@ -277,9 +315,15 @@
         let isMusicPlaying = false;
         let userInteracted = false;
         let musicLoaded = false;
+        let currentMusicSource = 0;
 
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        // 初始化应用
+        function initializeApp() {
             // 获取音频元素
             backgroundMusic = document.getElementById('background-music');
            
@@ -296,76 +340,112 @@
             document.getElementById('yes-btn').addEventListener('click', onYesClicked);
             document.getElementById('no-btn').addEventListener('click', onNoClicked);
             document.getElementById('music-toggle').addEventListener('click', toggleMusic);
+            document.getElementById('music-alternative').addEventListener('click', switchMusicSource);
            
             // 预加载音乐
             preloadMusic();
-        });
+           
+            // 初始调整布局
+            adjustLayout();
+        }
+
+        // 调整布局
+        function adjustLayout() {
+            const cat = document.getElementById('cat');
+            const container = document.getElementById('container');
+           
+            // 确保小猫完整显示
+            const catWidth = cat.offsetWidth;
+            const catHeight = cat.offsetHeight;
+           
+            if (catWidth > window.innerWidth * 0.8 || catHeight > window.innerHeight * 0.8) {
+                cat.style.fontSize = Math.min(
+                    window.innerWidth * 0.03,
+                    window.innerHeight * 0.05,
+                    24
+                ) + 'px';
+            }
+        }
 
         // 设置音乐事件监听
         function setupMusicEvents() {
             backgroundMusic.addEventListener('loadstart', function() {
                 console.log('开始加载音乐...');
-                document.getElementById('loading-message').style.display = 'block';
+                showLoading('音乐加载中...');
             });
            
             backgroundMusic.addEventListener('canplay', function() {
                 console.log('音乐可以播放了');
-                document.getElementById('loading-message').style.display = 'none';
+                hideLoading();
                 musicLoaded = true;
-            });
-           
-            backgroundMusic.addEventListener('canplaythrough', function() {
-                console.log('音乐已完全加载');
-                musicLoaded = true;
-                document.getElementById('loading-message').style.display = 'none';
+                showError('音乐加载成功！点击播放按钮开始播放', 'success');
             });
            
             backgroundMusic.addEventListener('error', function(e) {
                 console.error('音乐加载错误:', e);
-                document.getElementById('loading-message').style.display = 'none';
-                showError('音乐加载失败，请检查网络连接或音乐文件');
+                hideLoading();
                 musicLoaded = false;
+                showError('自定义音乐加载失败，已切换到备用音乐');
+                document.getElementById('music-alternative').style.display = 'block';
             });
-           
-            backgroundMusic.addEventListener('stalled', function() {
-                console.log('音乐加载停滞');
-                document.getElementById('loading-message').style.display = 'block';
-            });
+        }
+
+        // 切换音乐源
+        function switchMusicSource() {
+            currentMusicSource = 1; // 切换到备用音乐
+            backgroundMusic.load(); // 重新加载
+            showLoading('切换音乐中...');
+            document.getElementById('music-alternative').style.display = 'none';
         }
 
         // 预加载音乐
         function preloadMusic() {
             console.log('开始预加载音乐...');
-            // 设置音量
             backgroundMusic.volume = 0.7;
-            // 尝试加载
             backgroundMusic.load();
         }
 
+        // 显示加载信息
+        function showLoading(message) {
+            const loadingDiv = document.getElementById('loading-message');
+            loadingDiv.textContent = message;
+            loadingDiv.style.display = 'block';
+        }
+
+        // 隐藏加载信息
+        function hideLoading() {
+            document.getElementById('loading-message').style.display = 'none';
+        }
+
         // 显示错误信息
-        function showError(message) {
+        function showError(message, type = 'error') {
             const errorDiv = document.getElementById('error-message');
             errorDiv.textContent = message;
             errorDiv.style.display = 'block';
+            errorDiv.style.borderColor = type === 'success' ? '#4CAF50' : '#ff6b6b';
+            errorDiv.style.color = type === 'success' ? '#4CAF50' : '#ff6b6b';
            
             setTimeout(() => {
                 errorDiv.style.display = 'none';
-            }, 5000);
+            }, 3000);
         }
 
         // 设置用户交互监听
         function setupUserInteraction() {
-            // 页面点击事件 - 解决自动播放限制
             document.body.addEventListener('click', function() {
                 if (!userInteracted) {
                     userInteracted = true;
                     document.getElementById('click-hint').style.display = 'none';
-                   
-                    // 开始显示句子
                     startShowingSentences();
-                   
-                    // 小猫眨眼动画
                     startCatBlinking();
+                }
+            });
+
+            // 窗口大小变化时重新调整布局
+            window.addEventListener('resize', function() {
+                adjustLayout();
+                if (document.getElementById('question-container').style.display === 'flex') {
+                    showQuestion();
                 }
             });
         }
@@ -386,7 +466,7 @@
                     displayedSentences++;
                 } else {
                     clearInterval(interval);
-                    showQuestion();
+                    setTimeout(showQuestion, 1000);
                 }
             }, 800);
         }
@@ -408,9 +488,12 @@
                 bottom: catRect.bottom + 60
             };
            
+            let attempts = 0;
             do {
-                x = Math.random() * (window.innerWidth - 300) + 50;
+                x = Math.random() * (window.innerWidth - 200) + 50;
                 y = Math.random() * (window.innerHeight - 100) + 50;
+                attempts++;
+                if (attempts > 50) break; // 防止无限循环
             } while (
                 x > catArea.left && x < catArea.right &&
                 y > catArea.top && y < catArea.bottom
@@ -418,15 +501,10 @@
            
             textElement.style.left = `${x}px`;
             textElement.style.top = `${y}px`;
-           
             container.appendChild(textElement);
            
-            // 淡入动画
-            setTimeout(() => {
-                textElement.style.opacity = '1';
-            }, 10);
-           
-            // 淡出并移除
+            // 淡入淡出动画
+            setTimeout(() => textElement.style.opacity = '1', 10);
             setTimeout(() => {
                 textElement.style.opacity = '0';
                 setTimeout(() => {
@@ -441,7 +519,8 @@
         function startCatBlinking() {
             setInterval(() => {
                 const cat = document.getElementById('cat');
-                if (cat.textContent === catStates.normal && !document.getElementById('question-container').style.display === 'flex') {
+                if (cat.textContent === catStates.normal &&
+                    document.getElementById('question-container').style.display !== 'flex') {
                     cat.textContent = catStates.blink;
                     setTimeout(() => {
                         cat.textContent = catStates.normal;
@@ -455,46 +534,34 @@
             const cat = document.getElementById('cat');
             const questionContainer = document.getElementById('question-container');
            
-            // 移动小猫到上方 - 使用更可靠的计算方法
-            const catWidth = 600;
-            const catHeight = 200;
-            const catX = (window.innerWidth - catWidth) / 2;
-            const catY = 100;
+            // 移动小猫到上方
+            const catX = window.innerWidth / 2;
+            const catY = Math.min(100, window.innerHeight * 0.1);
            
-            cat.style.width = `${catWidth}px`;
-            cat.style.height = `${catHeight}px`;
             cat.style.left = `${catX}px`;
             cat.style.top = `${catY}px`;
-            cat.style.transform = 'none';
-            cat.style.fontSize = '20px';
+            cat.style.transform = 'translateX(-50%)';
+            cat.style.fontSize = Math.min(window.innerWidth * 0.03, 20) + 'px';
             cat.style.textAlign = 'center';
            
             // 显示问题
-            setTimeout(() => {
-                questionContainer.style.display = 'flex';
-                // 确保小猫仍然可见
-                cat.style.zIndex = '25';
-            }, 1000);
+            questionContainer.style.display = 'flex';
+            cat.style.zIndex = '25';
         }
 
         // 愿意按钮点击事件
         function onYesClicked() {
             const cat = document.getElementById('cat');
-           
-            // 小猫眨眼
             cat.textContent = catStates.blink;
            
             setTimeout(() => {
                 cat.textContent = catStates.normal;
-               
-                // 显示自定义弹窗
                 showCustomAlert();
             }, 500);
         }
 
         // 显示自定义弹窗
         function showCustomAlert() {
-            // 创建弹窗元素
             const alertDiv = document.createElement('div');
             alertDiv.className = 'custom-alert';
             alertDiv.innerHTML = `
@@ -503,26 +570,15 @@
                 <p><small>页面将在3秒后自动关闭...</small></p>
                 <button onclick="closePage()">立即关闭</button>
             `;
-           
             document.body.appendChild(alertDiv);
-           
-            // 3秒后自动关闭页面
             setTimeout(closePage, 3000);
         }
 
         // 关闭页面函数
         function closePage() {
-            // 先停止音乐
             stopMusic();
-           
-            // 延迟一下确保音乐停止，然后关闭窗口
             setTimeout(() => {
-                // 尝试关闭窗口（在大多数浏览器中有效）
-                if (window.close) {
-                    window.close();
-                }
-               
-                // 如果无法关闭窗口，则重定向到空白页
+                window.close();
                 setTimeout(() => {
                     window.location.href = 'about:blank';
                 }, 100);
@@ -536,17 +592,13 @@
             const yesBtn = document.getElementById('yes-btn');
             const cat = document.getElementById('cat');
            
-            // 小猫哭泣
             cat.textContent = catStates.sad;
            
             if (noButtonClicks >= 3) {
-                // 移除不愿意按钮
                 noBtn.style.display = 'none';
             } else {
-                // 缩小不愿意按钮
                 const currentScale = Math.pow(0.7, noButtonClicks);
                 const yesScale = Math.pow(1.3, noButtonClicks);
-               
                 noBtn.style.transform = `scale(${currentScale})`;
                 yesBtn.style.transform = `scale(${yesScale})`;
             }
@@ -555,7 +607,6 @@
         // 切换音乐
         function toggleMusic() {
             if (!userInteracted) {
-                // 触发用户交互
                 document.body.click();
                 return;
             }
@@ -575,27 +626,23 @@
         // 播放音乐
         function playMusic() {
             if (backgroundMusic && musicLoaded) {
-                document.getElementById('loading-message').style.display = 'block';
+                showLoading('准备播放音乐...');
                
                 const playPromise = backgroundMusic.play();
                
                 if (playPromise !== undefined) {
                     playPromise.then(() => {
-                        // 播放成功
                         isMusicPlaying = true;
                         document.getElementById('music-toggle').innerHTML = '🔊 停止音乐';
-                        document.getElementById('loading-message').style.display = 'none';
-                        console.log('音乐播放成功');
+                        hideLoading();
+                        showError('音乐播放成功！', 'success');
                     }).catch(error => {
-                        // 播放失败
-                        console.error('音乐播放失败:', error);
-                        document.getElementById('loading-message').style.display = 'none';
+                        console.error('播放失败:', error);
+                        hideLoading();
                         showError('播放失败: ' + error.message);
                         isMusicPlaying = false;
                     });
                 }
-            } else {
-                showError('音乐文件未准备好，请刷新页面重试');
             }
         }
 
@@ -609,14 +656,7 @@
             document.getElementById('music-toggle').innerHTML = '🔇 播放音乐';
         }
 
-        // 窗口大小变化时重新计算布局
-        window.addEventListener('resize', function() {
-            if (document.getElementById('question-container').style.display === 'flex') {
-                showQuestion();
-            }
-        });
-
-        // 使closePage函数在全局可访问
+        // 使函数在全局可访问
         window.closePage = closePage;
     </script>
 </body>
