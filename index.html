@@ -224,26 +224,6 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         }
 
-        #music-alternative {
-            position: absolute;
-            bottom: 60px;
-            right: 20px;
-            padding: 8px 12px;
-            background: linear-gradient(135deg, #ff6b93 0%, #ff8fa3 100%);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            z-index: 30;
-            font-size: min(1.8vw, 12px);
-            box-shadow: 0 4px 10px rgba(255, 107, 147, 0.3);
-            transition: all 0.3s ease;
-        }
-        
-        #music-alternative:hover {
-            transform: scale(1.05);
-        }
-
         .custom-alert {
             position: fixed;
             top: 50%;
@@ -364,14 +344,12 @@
         </div>
        
         <button id="music-toggle">🔇 点击播放音乐</button>
-        <button id="music-alternative" style="display: none;">🎵 使用备用音乐</button>
         <div id="click-hint">点击页面任意位置开始体验</div>
         <div id="loading-message">音乐加载中...</div>
         <div id="error-message"></div>
        
         <audio id="background-music" loop preload="auto">
             <source src="https://raw.githubusercontent.com/2057722964-source/kkz/main/gift.mp3" type="audio/mpeg">
-            <source src="https://assets.mixkit.co/music/preview/mixkit-gently-romantic-piano-578.mp3" type="audio/mpeg">
             您的浏览器不支持音频元素。
         </audio>
     </div>
@@ -416,7 +394,6 @@
         let isMusicPlaying = false;
         let userInteracted = false;
         let musicLoaded = false;
-        let currentMusicSource = 0;
         let heartsInterval;
 
         // 初始化
@@ -442,7 +419,6 @@
             document.getElementById('yes-btn').addEventListener('click', onYesClicked);
             document.getElementById('no-btn').addEventListener('click', onNoClicked);
             document.getElementById('music-toggle').addEventListener('click', toggleMusic);
-            document.getElementById('music-alternative').addEventListener('click', switchMusicSource);
            
             // 预加载音乐
             preloadMusic();
@@ -483,23 +459,17 @@
             backgroundMusic.addEventListener('error', function(e) {
                 hideLoading();
                 musicLoaded = false;
-                showError('自定义音乐加载失败，已切换到备用音乐');
-                document.getElementById('music-alternative').style.display = 'block';
+                showError('音乐加载失败，请检查网络连接或尝试刷新页面');
             });
-        }
-
-        // 切换音乐源
-        function switchMusicSource() {
-            currentMusicSource = 1; // 切换到备用音乐
-            backgroundMusic.load(); // 重新加载
-            showLoading('切换音乐中...');
-            document.getElementById('music-alternative').style.display = 'none';
         }
 
         // 预加载音乐
         function preloadMusic() {
             backgroundMusic.volume = 0.7;
-            backgroundMusic.load();
+            // 使用更可靠的方式加载音乐
+            setTimeout(() => {
+                backgroundMusic.load();
+            }, 1000);
         }
 
         // 显示加载信息
