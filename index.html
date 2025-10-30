@@ -154,18 +154,19 @@
        
         #music-toggle {
             position: absolute;
-            bottom: 20px;
-            right: 20px;
-            padding: 10px 15px;
+            top: 20px;
+            left: 20px;
+            padding: 12px 18px;
             background: linear-gradient(135deg, #ff6b93 0%, #ff8fa3 100%);
             color: white;
             border: none;
             border-radius: 50px;
             cursor: pointer;
             z-index: 30;
-            font-size: min(2vw, 14px);
+            font-size: 16px;
             box-shadow: 0 4px 10px rgba(255, 107, 147, 0.3);
             transition: all 0.3s ease;
+            min-width: 120px;
         }
         
         #music-toggle:hover {
@@ -223,27 +224,6 @@
             text-align: center;
             max-width: 90vw;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        #music-alternative {
-            position: absolute;
-            bottom: 60px;
-            right: 20px;
-            padding: 8px 12px;
-            background: linear-gradient(135deg, #ff6b93 0%, #ff8fa3 100%);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            z-index: 30;
-            font-size: min(1.8vw, 12px);
-            box-shadow: 0 4px 10px rgba(255, 107, 147, 0.3);
-            transition: all 0.3s ease;
-            display: none;
-        }
-        
-        #music-alternative:hover {
-            transform: scale(1.05);
         }
 
         .custom-alert {
@@ -339,6 +319,20 @@
             #cat {
                 font-size: min(5vw, 20px);
             }
+            
+            #music-toggle {
+                top: 15px;
+                left: 15px;
+                font-size: 14px;
+                padding: 10px 15px;
+                min-width: 100px;
+            }
+            
+            #click-hint {
+                bottom: 15px;
+                left: 15px;
+                font-size: 14px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -348,6 +342,20 @@
            
             #cat {
                 font-size: min(6vw, 18px);
+            }
+            
+            #music-toggle {
+                top: 10px;
+                left: 10px;
+                font-size: 12px;
+                padding: 8px 12px;
+                min-width: 90px;
+            }
+            
+            #click-hint {
+                bottom: 10px;
+                left: 10px;
+                font-size: 12px;
             }
         }
     </style>
@@ -367,7 +375,6 @@
         </div>
        
         <button id="music-toggle">🔇 播放音乐</button>
-        <button id="music-alternative">🎵 使用备用音乐</button>
         <div id="click-hint">点击页面任意位置开始体验</div>
         <div id="loading-message">音乐加载中...</div>
         <div id="error-message"></div>
@@ -454,6 +461,7 @@
         let musicLoaded = false;
         let heartsInterval;
         let catBlinkInterval;
+        let musicLoadTimeout;
 
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
@@ -478,7 +486,6 @@
             document.getElementById('yes-btn').addEventListener('click', onYesClicked);
             document.getElementById('no-btn').addEventListener('click', onNoClicked);
             document.getElementById('music-toggle').addEventListener('click', toggleMusic);
-            document.getElementById('music-alternative').addEventListener('click', switchMusicSource);
            
             // 预加载音乐
             preloadMusic();
@@ -508,33 +515,40 @@
         function setupMusicEvents() {
             backgroundMusic.addEventListener('loadstart', function() {
                 showLoading('音乐加载中...');
+                // 设置3秒超时自动切换备用音乐
+                musicLoadTimeout = setTimeout(() => {
+                    if (!musicLoaded) {
+                        switchToBackupMusic();
+                    }
+                }, 3000);
             });
            
             backgroundMusic.addEventListener('canplay', function() {
+                clearTimeout(musicLoadTimeout);
                 hideLoading();
                 musicLoaded = true;
                 showError('音乐加载成功！点击播放按钮开始播放', 'success');
             });
            
             backgroundMusic.addEventListener('canplaythrough', function() {
+                clearTimeout(musicLoadTimeout);
                 hideLoading();
                 musicLoaded = true;
             });
            
             backgroundMusic.addEventListener('error', function(e) {
+                clearTimeout(musicLoadTimeout);
                 hideLoading();
                 musicLoaded = false;
-                showError('自定义音乐加载失败，请尝试使用备用音乐');
-                document.getElementById('music-alternative').style.display = 'block';
+                switchToBackupMusic();
             });
         }
 
-        // 切换音乐源
-        function switchMusicSource() {
-            // 切换到备用音乐
-            backgroundMusic.src = "https://assets.mixkit.co/music/preview/mixkit-gently-romantic-piano-578.mp3";
-            showLoading('切换音乐中...');
-            document.getElementById('music-alternative').style.display = 'none';
+        // 切换到备用音乐
+        function switchToBackupMusic() {
+            showError('正在切换到备用音乐...');
+            // 使用可靠的备用音乐URL
+            backgroundMusic.src = "https://cdn.pixabay.com/download/audio/2022/11/02/audio_eb11f97d98.mp3?filename=soft-piano-ambient-184253.mp3";
             backgroundMusic.load();
         }
 
