@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>给特别的你</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background-color: white;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+            color: #ffb6c1;
+        }
+        
+        #container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        #cat {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: monospace;
+            font-size: 24px;
+            font-weight: bold;
+            white-space: pre;
+            text-align: center;
+            z-index: 10;
+            transition: all 1s ease;
+        }
+        
+        .floating-text {
+            position: absolute;
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffb6c1;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            padding: 15px 25px;
+            border-radius: 10px;
+            max-width: 400px;
+            word-wrap: break-word;
+        }
+        
+        #question-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            background-color: white;
+        }
+        
+        #question {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .btn {
+            padding: 15px 40px;
+            font-size: 28px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: white;
+            background-color: #ffb6c1;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        
+        #music-toggle {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: #ffb6c1;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 30;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <pre id="cat">           /\_/\  
+          ( o.o ) 
+           > ^ <  </pre>
+        
+        <div id="question-container">
+            <div id="question">能不能请你做我的对象？</div>
+            <div class="buttons">
+                <button id="yes-btn" class="btn">愿意</button>
+                <button id="no-btn" class="btn">不愿意</button>
+            </div>
+        </div>
+        
+        <button id="music-toggle">播放音乐</button>
+    </div>
+
+    <script>
+        // 句子列表
+        const sentences = [
+            "我喜欢你，也喜欢你不注意我时的样子。",
+            "与你对话前，我练习了许多遍开场白。",
+            "你笑起来的样子，比台灯更安稳。",
+            "我想送你一杯热茶，暖你一天的冷风。",
+            "你走近时，我甚至连呼吸都想对你谦让。",
+            "日子有风也好，有雨也好，只要有你在，我就安静。",
+            "你的名字，是我所有笔记里最想写的一行。",
+            "我不是你轰轰烈烈的故事，只是你平淡日里的温柔。",
+            "我习惯了在朋友圈里喜欢你，但从不点赞。",
+            "你不知道，那些我假装无事的笑，是为你保留的。",
+            "偶然和你擦肩，是我心里开花的瞬间。",
+            "我想和你聊的不只是天气，还有你没说出口的愿望。",
+            "喜欢一个人，就是明知道走不进去，却还想走近。",
+            "你在我身边时，天空仿佛安静了下来。",
+            "我愿意做你看不到的那个人，却一直在你身边。",
+            "我的世界不大，但装你正好。",
+            "你若发光，我就在旁边戴墨镜欣赏。",
+            "我不急于表白，只想做你生活里的一颗小安定。",
+            "每次见到你，我都很想问一句：你刚好好吗？",
+            "我喜欢你，就像喜欢冬天的暖阳，悄悄地来了。",
+            "每一个努力的今天，都会在未来闪闪发光。",
+            "别忘了，你比你想象的还要强大。",
+            "失败并不可怕，可怕的是放弃尝试。",
+            "哪怕慢一点，也比停在原地好。",
+            "你已经走过很多路，别停在这里，继续前进。",
+            "把握住现在，你就是未来的自己在等你。",
+            "今天的汗水，是明天成功的光芒。",
+            "即使前路未知，也不要停止出发。",
+            "你值得所有美好，也值得被温柔以待。",
+            "抬头看看天，它比你想象的更宽更明亮。",
+            "今天要努力哦",
+            "明天还会再见吗",
+            "好好爱自己",
+            "别害怕未来",
+            "阳光总会再次照进来",
+            "相信一切都会变好",
+            "你已经很棒了",
+            "继续加油吧",
+            "别忘了微笑",
+            "一切都值得"
+        ];
+
+        // 小猫状态
+        const catStates = {
+            normal: "           /\\_/\\  \n          ( o.o ) \n           > ^ <  ",
+            blink: "           /\\_/\\  \n          ( -.- ) \n           > ^ <  ",
+            sad: "           /\\_/\\  \n          ( T.T ) \n           > ^ <  "
+        };
+
+        // 全局变量
+        let displayedSentences = 0;
+        let noButtonClicks = 0;
+        let audioContext;
+        let backgroundMusic;
+        let isMusicPlaying = false;
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 随机打乱句子顺序
+            shuffleArray(sentences);
+            
+            // 开始显示句子
+            startShowingSentences();
+            
+            // 小猫眨眼动画
+            startCatBlinking();
+            
+            // 设置按钮事件
+            document.getElementById('yes-btn').addEventListener('click', onYesClicked);
+            document.getElementById('no-btn').addEventListener('click', onNoClicked);
+            document.getElementById('music-toggle').addEventListener('click', toggleMusic);
+        });
+
+        // 打乱数组
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // 开始显示句子
+        function startShowingSentences() {
+            const interval = setInterval(() => {
+                if (displayedSentences < sentences.length) {
+                    createFloatingText(sentences[displayedSentences]);
+                    displayedSentences++;
+                } else {
+                    clearInterval(interval);
+                    showQuestion();
+                }
+            }, 800);
+        }
+
+        // 创建浮动文本
+        function createFloatingText(text) {
+            const container = document.getElementById('container');
+            const textElement = document.createElement('div');
+            textElement.className = 'floating-text';
+            textElement.textContent = text + "  (=^･ω･^=)";
+            
+            // 随机位置，避开小猫区域
+            let x, y;
+            const catRect = document.getElementById('cat').getBoundingClientRect();
+            const catArea = {
+                left: catRect.left - 80,
+                top: catRect.top - 60,
+                right: catRect.right + 80,
+                bottom: catRect.bottom + 60
+            };
+            
+            do {
+                x = Math.random() * (window.innerWidth - 300) + 50;
+                y = Math.random() * (window.innerHeight - 100) + 50;
+            } while (
+                x > catArea.left && x < catArea.right &&
+                y > catArea.top && y < catArea.bottom
+            );
+            
+            textElement.style.left = `${x}px`;
+            textElement.style.top = `${y}px`;
+            
+            container.appendChild(textElement);
+            
+            // 淡入动画
+            setTimeout(() => {
+                textElement.style.opacity = '1';
+            }, 10);
+            
+            // 淡出并移除
+            setTimeout(() => {
+                textElement.style.opacity = '0';
+                setTimeout(() => {
+                    container.removeChild(textElement);
+                }, 500);
+            }, 3000);
+        }
+
+        // 小猫眨眼动画
+        function startCatBlinking() {
+            setInterval(() => {
+                const cat = document.getElementById('cat');
+                if (cat.textContent === catStates.normal) {
+                    cat.textContent = catStates.blink;
+                    setTimeout(() => {
+                        cat.textContent = catStates.normal;
+                    }, 200);
+                }
+            }, 2000);
+        }
+
+        // 显示问题
+        function showQuestion() {
+            const cat = document.getElementById('cat');
+            const questionContainer = document.getElementById('question-container');
+            
+            // 移动小猫到上方
+            cat.style.top = '100px';
+            cat.style.transform = 'translateX(-50%)';
+            cat.style.fontSize = '20px';
+            
+            // 显示问题
+            setTimeout(() => {
+                questionContainer.style.display = 'flex';
+            }, 1000);
+        }
+
+        // 愿意按钮点击事件
+        function onYesClicked() {
+            const cat = document.getElementById('cat');
+            
+            // 小猫眨眼
+            cat.textContent = catStates.blink;
+            setTimeout(() => {
+                cat.textContent = catStates.normal;
+                
+                // 显示成功消息
+                setTimeout(() => {
+                    alert('太好了！谢谢你愿意！');
+                    // 这里可以添加更多结束逻辑
+                }, 300);
+            }, 500);
+        }
+
+        // 不愿意按钮点击事件
+        function onNoClicked() {
+            noButtonClicks++;
+            const noBtn = document.getElementById('no-btn');
+            const yesBtn = document.getElementById('yes-btn');
+            const cat = document.getElementById('cat');
+            
+            // 小猫哭泣
+            cat.textContent = catStates.sad;
+            
+            if (noButtonClicks >= 3) {
+                // 移除不愿意按钮
+                noBtn.style.display = 'none';
+            } else {
+                // 缩小不愿意按钮
+                const currentWidth = parseInt(getComputedStyle(noBtn).width);
+                const currentHeight = parseInt(getComputedStyle(noBtn).height);
+                const currentFontSize = parseInt(getComputedStyle(noBtn).fontSize);
+                
+                noBtn.style.width = `${currentWidth * 0.7}px`;
+                noBtn.style.height = `${currentHeight * 0.7}px`;
+                noBtn.style.fontSize = `${currentFontSize * 0.7}px`;
+                
+                // 放大愿意按钮
+                const yesWidth = parseInt(getComputedStyle(yesBtn).width);
+                const yesHeight = parseInt(getComputedStyle(yesBtn).height);
+                const yesFontSize = parseInt(getComputedStyle(yesBtn).fontSize);
+                
+                yesBtn.style.width = `${yesWidth * 1.3}px`;
+                yesBtn.style.height = `${yesHeight * 1.3}px`;
+                yesBtn.style.fontSize = `${yesFontSize * 1.3}px`;
+            }
+        }
+
+        // 切换音乐
+        function toggleMusic() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            if (!isMusicPlaying) {
+                // 创建简单的背景音乐（使用振荡器模拟）
+                backgroundMusic = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                backgroundMusic.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                backgroundMusic.type = 'sine';
+                backgroundMusic.frequency.value = 440;
+                
+                gainNode.gain.value = 0.1;
+                
+                backgroundMusic.start();
+                isMusicPlaying = true;
+                document.getElementById('music-toggle').textContent = '停止音乐';
+            } else {
+                if (backgroundMusic) {
+                    backgroundMusic.stop();
+                }
+                isMusicPlaying = false;
+                document.getElementById('music-toggle').textContent = '播放音乐';
+            }
+        }
+    </script>
+</body>
+</html>
