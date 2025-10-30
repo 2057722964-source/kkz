@@ -135,6 +135,21 @@
             display: none;
         }
 
+        #error-message {
+            position: absolute;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ff6b6b;
+            font-size: 14px;
+            z-index: 30;
+            display: none;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: 1px solid #ff6b6b;
+        }
+
         /* 自定义弹窗样式 */
         .custom-alert {
             position: fixed;
@@ -191,10 +206,14 @@
         <button id="music-toggle">🔇 点击播放音乐</button>
         <div id="click-hint">点击页面任意位置开始</div>
         <div id="loading-message">音乐加载中...</div>
+        <div id="error-message"></div>
        
-        <!-- 隐藏的音频元素 - 使用您的自定义音乐 -->
+        <!-- 隐藏的音频元素 - 使用正确的GitHub原始文件链接 -->
         <audio id="background-music" loop preload="auto">
-            <source src="https://github.com/2057722964-source/kkz/blob/main/gift.mp3?raw=true" type="audio/mpeg">
+            <!-- 主要音乐源 -->
+            <source src="https://raw.githubusercontent.com/2057722964-source/kkz/main/gift.mp3" type="audio/mpeg">
+            <!-- 备用音乐源 -->
+            <source src="https://cdn.jsdelivr.net/gh/2057722964-source/kkz/gift.mp3" type="audio/mpeg">
             您的浏览器不支持音频元素。
         </audio>
     </div>
@@ -257,20 +276,15 @@
         let backgroundMusic;
         let isMusicPlaying = false;
         let userInteracted = false;
+        let musicLoaded = false;
 
         // 初始化
         document.addEventListener('DOMContentLoaded', function() {
             // 获取音频元素
             backgroundMusic = document.getElementById('background-music');
            
-            // 设置音乐加载事件
-            backgroundMusic.addEventListener('loadstart', function() {
-                document.getElementById('loading-message').style.display = 'block';
-            });
-           
-            backgroundMusic.addEventListener('canplay', function() {
-                document.getElementById('loading-message').style.display = 'none';
-            });
+            // 设置音乐事件监听
+            setupMusicEvents();
            
             // 随机打乱句子顺序
             shuffleArray(sentences);
@@ -282,7 +296,62 @@
             document.getElementById('yes-btn').addEventListener('click', onYesClicked);
             document.getElementById('no-btn').addEventListener('click', onNoClicked);
             document.getElementById('music-toggle').addEventListener('click', toggleMusic);
+           
+            // 预加载音乐
+            preloadMusic();
         });
+
+        // 设置音乐事件监听
+        function setupMusicEvents() {
+            backgroundMusic.addEventListener('loadstart', function() {
+                console.log('开始加载音乐...');
+                document.getElementById('loading-message').style.display = 'block';
+            });
+           
+            backgroundMusic.addEventListener('canplay', function() {
+                console.log('音乐可以播放了');
+                document.getElementById('loading-message').style.display = 'none';
+                musicLoaded = true;
+            });
+           
+            backgroundMusic.addEventListener('canplaythrough', function() {
+                console.log('音乐已完全加载');
+                musicLoaded = true;
+                document.getElementById('loading-message').style.display = 'none';
+            });
+           
+            backgroundMusic.addEventListener('error', function(e) {
+                console.error('音乐加载错误:', e);
+                document.getElementById('loading-message').style.display = 'none';
+                showError('音乐加载失败，请检查网络连接或音乐文件');
+                musicLoaded = false;
+            });
+           
+            backgroundMusic.addEventListener('stalled', function() {
+                console.log('音乐加载停滞');
+                document.getElementById('loading-message').style.display = 'block';
+            });
+        }
+
+        // 预加载音乐
+        function preloadMusic() {
+            console.log('开始预加载音乐...');
+            // 设置音量
+            backgroundMusic.volume = 0.7;
+            // 尝试加载
+            backgroundMusic.load();
+        }
+
+        // 显示错误信息
+        function showError(message) {
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+           
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 5000);
+        }
 
         // 设置用户交互监听
         function setupUserInteraction() {
@@ -408,7 +477,7 @@
             }, 1000);
         }
 
-        // 愿意按钮点击事件 - 修改后的版本
+        // 愿意按钮点击事件
         function onYesClicked() {
             const cat = document.getElementById('cat');
            
@@ -449,7 +518,9 @@
             // 延迟一下确保音乐停止，然后关闭窗口
             setTimeout(() => {
                 // 尝试关闭窗口（在大多数浏览器中有效）
-                window.close();
+                if (window.close) {
+                    window.close();
+                }
                
                 // 如果无法关闭窗口，则重定向到空白页
                 setTimeout(() => {
@@ -489,6 +560,11 @@
                 return;
             }
            
+            if (!musicLoaded) {
+                showError('音乐尚未加载完成，请稍后重试');
+                return;
+            }
+           
             if (!isMusicPlaying) {
                 playMusic();
             } else {
@@ -498,19 +574,28 @@
 
         // 播放音乐
         function playMusic() {
-            if (backgroundMusic) {
-                // 显示加载提示
+            if (backgroundMusic && musicLoaded) {
                 document.getElementById('loading-message').style.display = 'block';
                
-                backgroundMusic.play().then(() => {
-                    isMusicPlaying = true;
-                    document.getElementById('music-toggle').innerHTML = '🔊 停止音乐';
-                    document.getElementById('loading-message').style.display = 'none';
-                }).catch(error => {
-                    console.log('音乐播放失败:', error);
-                    document.getElementById('loading-message').style.display = 'none';
-                    alert('请点击页面任意位置后重试播放音乐');
-                });
+                const playPromise = backgroundMusic.play();
+               
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        // 播放成功
+                        isMusicPlaying = true;
+                        document.getElementById('music-toggle').innerHTML = '🔊 停止音乐';
+                        document.getElementById('loading-message').style.display = 'none';
+                        console.log('音乐播放成功');
+                    }).catch(error => {
+                        // 播放失败
+                        console.error('音乐播放失败:', error);
+                        document.getElementById('loading-message').style.display = 'none';
+                        showError('播放失败: ' + error.message);
+                        isMusicPlaying = false;
+                    });
+                }
+            } else {
+                showError('音乐文件未准备好，请刷新页面重试');
             }
         }
 
@@ -527,7 +612,7 @@
         // 窗口大小变化时重新计算布局
         window.addEventListener('resize', function() {
             if (document.getElementById('question-container').style.display === 'flex') {
-                showQuestion(); // 重新计算布局
+                showQuestion();
             }
         });
 
