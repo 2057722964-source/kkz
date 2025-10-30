@@ -69,9 +69,9 @@
             display: none;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             z-index: 20;
             background-color: white;
-            padding-top: min(10vh, 100px);
         }
        
         #question {
@@ -79,7 +79,6 @@
             font-weight: bold;
             margin-bottom: min(5vh, 50px);
             text-align: center;
-            margin-top: min(20vh, 200px);
             padding: 0 20px;
         }
        
@@ -233,7 +232,6 @@
 
         @media (max-width: 480px) {
             #question {
-                margin-top: min(15vh, 150px);
                 font-size: min(6vw, 28px);
             }
            
@@ -271,6 +269,7 @@
     </div>
 
     <script>
+        // 句子列表
         const sentences = [
             "我喜欢你，也喜欢你不注意我时的样子。",
             "与你对话前，我练习了许多遍开场白。",
@@ -294,12 +293,14 @@
             "我喜欢你，就像喜欢冬天的暖阳，悄悄地来了。"
         ];
 
+        // 小猫状态
         const catStates = {
             normal: "           /\\_/\\  \n          ( o.o ) \n           > ^ <  ",
             blink: "           /\\_/\\  \n          ( -.- ) \n           > ^ <  ",
             sad: "           /\\_/\\  \n          ( T.T ) \n           > ^ <  "
         };
 
+        // 全局变量
         let displayedSentences = 0;
         let noButtonClicks = 0;
         let backgroundMusic;
@@ -308,27 +309,43 @@
         let musicLoaded = false;
         let currentMusicSource = 0;
 
+        // 初始化
         document.addEventListener('DOMContentLoaded', function() {
             initializeApp();
         });
 
+        // 初始化应用
         function initializeApp() {
+            // 获取音频元素
             backgroundMusic = document.getElementById('background-music');
+           
+            // 设置音乐事件监听
             setupMusicEvents();
+           
+            // 随机打乱句子顺序
             shuffleArray(sentences);
+           
+            // 设置用户交互监听
             setupUserInteraction();
            
+            // 设置按钮事件
             document.getElementById('yes-btn').addEventListener('click', onYesClicked);
             document.getElementById('no-btn').addEventListener('click', onNoClicked);
             document.getElementById('music-toggle').addEventListener('click', toggleMusic);
             document.getElementById('music-alternative').addEventListener('click', switchMusicSource);
            
+            // 预加载音乐
             preloadMusic();
+           
+            // 初始调整布局
             adjustLayout();
         }
 
+        // 调整布局
         function adjustLayout() {
             const cat = document.getElementById('cat');
+           
+            // 确保小猫完整显示
             const catWidth = cat.offsetWidth;
             const catHeight = cat.offsetHeight;
            
@@ -341,6 +358,7 @@
             }
         }
 
+        // 设置音乐事件监听
         function setupMusicEvents() {
             backgroundMusic.addEventListener('loadstart', function() {
                 showLoading('音乐加载中...');
@@ -360,28 +378,33 @@
             });
         }
 
+        // 切换音乐源
         function switchMusicSource() {
-            currentMusicSource = 1;
-            backgroundMusic.load();
+            currentMusicSource = 1; // 切换到备用音乐
+            backgroundMusic.load(); // 重新加载
             showLoading('切换音乐中...');
             document.getElementById('music-alternative').style.display = 'none';
         }
 
+        // 预加载音乐
         function preloadMusic() {
             backgroundMusic.volume = 0.7;
             backgroundMusic.load();
         }
 
+        // 显示加载信息
         function showLoading(message) {
             const loadingDiv = document.getElementById('loading-message');
             loadingDiv.textContent = message;
             loadingDiv.style.display = 'block';
         }
 
+        // 隐藏加载信息
         function hideLoading() {
             document.getElementById('loading-message').style.display = 'none';
         }
 
+        // 显示错误信息
         function showError(message, type = 'error') {
             const errorDiv = document.getElementById('error-message');
             errorDiv.textContent = message;
@@ -394,6 +417,7 @@
             }, 3000);
         }
 
+        // 设置用户交互监听
         function setupUserInteraction() {
             document.body.addEventListener('click', function() {
                 if (!userInteracted) {
@@ -404,6 +428,7 @@
                 }
             });
 
+            // 窗口大小变化时重新调整布局
             window.addEventListener('resize', function() {
                 adjustLayout();
                 if (document.getElementById('question-container').style.display === 'flex') {
@@ -412,6 +437,7 @@
             });
         }
 
+        // 打乱数组
         function shuffleArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -419,6 +445,7 @@
             }
         }
 
+        // 开始显示句子
         function startShowingSentences() {
             const interval = setInterval(() => {
                 if (displayedSentences < sentences.length) {
@@ -431,12 +458,14 @@
             }, 800);
         }
 
+        // 创建浮动文本
         function createFloatingText(text) {
             const container = document.getElementById('container');
             const textElement = document.createElement('div');
             textElement.className = 'floating-text';
             textElement.textContent = text + "  (=^･ω･^=)";
            
+            // 随机位置，避开小猫区域
             let x, y;
             const catRect = document.getElementById('cat').getBoundingClientRect();
             const catArea = {
@@ -451,7 +480,7 @@
                 x = Math.random() * (window.innerWidth - 200) + 50;
                 y = Math.random() * (window.innerHeight - 100) + 50;
                 attempts++;
-                if (attempts > 50) break;
+                if (attempts > 50) break; // 防止无限循环
             } while (
                 x > catArea.left && x < catArea.right &&
                 y > catArea.top && y < catArea.bottom
@@ -461,6 +490,7 @@
             textElement.style.top = `${y}px`;
             container.appendChild(textElement);
            
+            // 淡入淡出动画
             setTimeout(() => textElement.style.opacity = '1', 10);
             setTimeout(() => {
                 textElement.style.opacity = '0';
@@ -472,6 +502,7 @@
             }, 3000);
         }
 
+        // 小猫眨眼动画
         function startCatBlinking() {
             setInterval(() => {
                 const cat = document.getElementById('cat');
@@ -485,10 +516,12 @@
             }, 2000);
         }
 
+        // 显示问题
         function showQuestion() {
             const cat = document.getElementById('cat');
             const questionContainer = document.getElementById('question-container');
            
+            // 移动小猫到上方
             const catX = window.innerWidth / 2;
             const catY = Math.min(100, window.innerHeight * 0.1);
            
@@ -498,10 +531,12 @@
             cat.style.fontSize = Math.min(window.innerWidth * 0.03, 20) + 'px';
             cat.style.textAlign = 'center';
            
+            // 显示问题
             questionContainer.style.display = 'flex';
             cat.style.zIndex = '25';
         }
 
+        // 愿意按钮点击事件
         function onYesClicked() {
             const cat = document.getElementById('cat');
             cat.textContent = catStates.blink;
@@ -512,6 +547,7 @@
             }, 500);
         }
 
+        // 显示自定义弹窗
         function showCustomAlert() {
             const alertDiv = document.createElement('div');
             alertDiv.className = 'custom-alert';
@@ -525,6 +561,7 @@
             setTimeout(closePage, 3000);
         }
 
+        // 关闭页面函数
         function closePage() {
             stopMusic();
             setTimeout(() => {
@@ -535,6 +572,7 @@
             }, 500);
         }
 
+        // 不愿意按钮点击事件
         function onNoClicked() {
             noButtonClicks++;
             const noBtn = document.getElementById('no-btn');
@@ -553,6 +591,7 @@
             }
         }
 
+        // 切换音乐
         function toggleMusic() {
             if (!userInteracted) {
                 document.body.click();
@@ -571,6 +610,7 @@
             }
         }
 
+        // 播放音乐
         function playMusic() {
             if (backgroundMusic && musicLoaded) {
                 showLoading('准备播放音乐...');
@@ -592,6 +632,7 @@
             }
         }
 
+        // 停止音乐
         function stopMusic() {
             if (backgroundMusic) {
                 backgroundMusic.pause();
@@ -601,6 +642,7 @@
             document.getElementById('music-toggle').innerHTML = '🔇 播放音乐';
         }
 
+        // 使函数在全局可访问
         window.closePage = closePage;
     </script>
 </body>
