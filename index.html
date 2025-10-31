@@ -35,6 +35,7 @@
             width: 90%;
         }
         
+        /* 线条风格小猫 */
         .cat {
             width: 200px;
             height: 200px;
@@ -42,25 +43,24 @@
             position: relative;
         }
         
-        .cat-body {
-            width: 150px;
+        .cat-head {
+            width: 120px;
             height: 120px;
-            background-color: #ff9966;
-            border-radius: 60% 60% 50% 50%;
-            position: relative;
-            margin: 0 auto;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 3px solid #8B4513;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 40px;
         }
         
-        .cat-head {
-            width: 130px;
-            height: 110px;
-            background-color: #ff9966;
-            border-radius: 45%;
+        .cat-body {
+            width: 140px;
+            height: 80px;
+            border: 3px solid #8B4513;
+            border-radius: 60% 60% 40% 40%;
             position: absolute;
-            top: -50px;
-            left: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            top: 90px;
+            left: 30px;
         }
         
         .cat-ear {
@@ -69,77 +69,76 @@
             height: 0;
             border-left: 15px solid transparent;
             border-right: 15px solid transparent;
-            border-bottom: 30px solid #ff9966;
-            top: -20px;
+            border-bottom: 25px solid #8B4513;
+            top: -10px;
         }
         
         .cat-ear.left {
-            left: 20px;
+            left: 25px;
             transform: rotate(-20deg);
         }
         
         .cat-ear.right {
-            right: 20px;
+            right: 25px;
             transform: rotate(20deg);
         }
         
         .cat-eye {
-            width: 25px;
-            height: 35px;
-            background-color: #fff;
+            width: 20px;
+            height: 30px;
+            border: 2px solid #8B4513;
             border-radius: 50%;
             position: absolute;
-            top: 30px;
+            top: 40px;
             overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         
         .cat-eye.left {
-            left: 30px;
+            left: 35px;
         }
         
         .cat-eye.right {
-            right: 30px;
+            right: 35px;
         }
         
         .cat-pupil {
-            width: 12px;
-            height: 18px;
-            background-color: #333;
+            width: 10px;
+            height: 15px;
+            background-color: #8B4513;
             border-radius: 50%;
             position: absolute;
-            top: 8px;
-            left: 6px;
+            top: 7px;
+            left: 4px;
         }
         
         .cat-nose {
-            width: 20px;
-            height: 12px;
-            background-color: #ff6699;
+            width: 15px;
+            height: 8px;
+            border: 2px solid #8B4513;
             border-radius: 40%;
             position: absolute;
-            top: 60px;
-            left: 55px;
+            top: 65px;
+            left: 52px;
         }
         
         .cat-mouth {
-            width: 30px;
-            height: 15px;
-            border-bottom: 3px solid #ff6699;
+            width: 25px;
+            height: 12px;
+            border-bottom: 2px solid #8B4513;
             border-radius: 0 0 50% 50%;
             position: absolute;
-            top: 70px;
-            left: 50px;
+            top: 75px;
+            left: 47px;
         }
         
         .cat-tail {
-            width: 120px;
-            height: 20px;
-            background-color: #ff9966;
+            width: 100px;
+            height: 15px;
+            border: 2px solid #8B4513;
             border-radius: 10px;
             position: absolute;
-            bottom: 10px;
-            right: -80px;
+            bottom: 30px;
+            right: -60px;
             transform: rotate(-20deg);
         }
         
@@ -240,18 +239,30 @@
             text-shadow: 1px 1px 2px rgba(255,255,255,0.7);
         }
         
-        .firework {
+        /* 飘落元素 */
+        .falling-element {
             position: absolute;
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            box-shadow: 0 0 10px 2px rgba(255,255,255,0.8);
-            z-index: 1;
+            font-size: 30px;
+            z-index: 5;
+            user-select: none;
+            pointer-events: none;
+            animation: falling linear infinite;
         }
         
         @keyframes float {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes falling {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(calc(100vh + 100px)) rotate(360deg);
+                opacity: 0.7;
+            }
         }
         
         .music-control {
@@ -286,26 +297,9 @@
             color: #8B4513;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
-        
-        .halloween-decoration {
-            position: absolute;
-            font-size: 40px;
-            z-index: 5;
-            opacity: 0.7;
-        }
-        
-        .decoration1 { top: 10%; left: 10%; }
-        .decoration2 { top: 10%; right: 10%; }
-        .decoration3 { bottom: 10%; left: 10%; }
-        .decoration4 { bottom: 10%; right: 10%; }
     </style>
 </head>
 <body>
-    <div class="halloween-decoration decoration1">🎃</div>
-    <div class="halloween-decoration decoration2">👻</div>
-    <div class="halloween-decoration decoration3">🦇</div>
-    <div class="halloween-decoration decoration4">🍬</div>
-    
     <div class="music-control" id="musicControl">
         <i>♪</i>
     </div>
@@ -403,7 +397,7 @@
                 question.style.display = 'none';
                 options.style.display = 'none';
                 message.textContent = "那就由喵喵我告诉姐姐是什么节日吧～万圣节🎃！姐姐万圣节快乐哦！";
-                createFireworks();
+                createFallingElements();
             });
             
             // 提交按钮点击事件
@@ -414,7 +408,7 @@
                     question.style.display = 'none';
                     message.textContent = "姐姐万圣节快乐哦！";
                     ghost.style.display = 'block';
-                    createFireworks();
+                    createFallingElements();
                 } else {
                     message.textContent = "不对哦，再想想看～";
                     setTimeout(() => {
@@ -423,37 +417,76 @@
                 }
             });
             
-            // 创建烟花特效
-            function createFireworks() {
-                for (let i = 0; i < 50; i++) {
+            // 创建飘落元素特效
+            function createFallingElements() {
+                const elements = ['👻', '🎃', '🍬', '🦇', '🍭'];
+                
+                for (let i = 0; i < 30; i++) {
                     setTimeout(() => {
-                        const firework = document.createElement('div');
-                        firework.className = 'firework';
+                        const element = document.createElement('div');
+                        element.className = 'falling-element';
                         
-                        // 随机颜色
-                        const colors = ['#FF5252', '#FF4081', '#E040FB', '#7C4DFF', '#536DFE', '#448AFF', '#40C4FF', '#18FFFF', '#64FFDA', '#69F0AE'];
-                        const color = colors[Math.floor(Math.random() * colors.length)];
-                        firework.style.backgroundColor = color;
-                        firework.style.boxShadow = `0 0 10px 2px ${color}`;
+                        // 随机选择元素
+                        const randomElement = elements[Math.floor(Math.random() * elements.length)];
+                        element.textContent = randomElement;
                         
                         // 随机位置
                         const x = Math.random() * window.innerWidth;
-                        const y = Math.random() * window.innerHeight;
-                        firework.style.left = `${x}px`;
-                        firework.style.top = `${y}px`;
+                        element.style.left = `${x}px`;
                         
-                        document.body.appendChild(firework);
+                        // 随机大小
+                        const size = Math.random() * 20 + 20;
+                        element.style.fontSize = `${size}px`;
                         
-                        // 烟花动画
+                        // 随机动画时长
+                        const duration = Math.random() * 10 + 10;
+                        element.style.animationDuration = `${duration}s`;
+                        
+                        // 随机延迟
+                        const delay = Math.random() * 5;
+                        element.style.animationDelay = `${delay}s`;
+                        
+                        document.body.appendChild(element);
+                        
+                        // 动画结束后移除元素
                         setTimeout(() => {
-                            firework.style.transform = 'scale(2)';
-                            firework.style.opacity = '0';
-                            setTimeout(() => {
-                                document.body.removeChild(firework);
-                            }, 1000);
-                        }, 100);
-                    }, i * 200);
+                            if (element.parentNode) {
+                                document.body.removeChild(element);
+                            }
+                        }, (duration + delay) * 1000);
+                    }, i * 500);
                 }
+                
+                // 持续创建新元素
+                setInterval(() => {
+                    const element = document.createElement('div');
+                    element.className = 'falling-element';
+                    
+                    // 随机选择元素
+                    const randomElement = elements[Math.floor(Math.random() * elements.length)];
+                    element.textContent = randomElement;
+                    
+                    // 随机位置
+                    const x = Math.random() * window.innerWidth;
+                    element.style.left = `${x}px`;
+                    
+                    // 随机大小
+                    const size = Math.random() * 20 + 20;
+                    element.style.fontSize = `${size}px`;
+                    
+                    // 随机动画时长
+                    const duration = Math.random() * 10 + 10;
+                    element.style.animationDuration = `${duration}s`;
+                    
+                    document.body.appendChild(element);
+                    
+                    // 动画结束后移除元素
+                    setTimeout(() => {
+                        if (element.parentNode) {
+                            document.body.removeChild(element);
+                        }
+                    }, duration * 1000);
+                }, 2000);
             }
         });
     </script>
