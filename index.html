@@ -3,338 +3,660 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>活泼可爱的小金毛</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>special</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
-            color: #5a3921;
-            line-height: 1.6;
+            background: linear-gradient(135deg, #ffcce6 0%, #ff99cc 100%);
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            overflow: hidden;
+            position: relative;
+            color: #8B4513;
             padding: 20px;
         }
         
         .container {
-            max-width: 1000px;
-            width: 100%;
             text-align: center;
-        }
-        
-        header {
-            margin-bottom: 30px;
-        }
-        
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            color: #8b4513;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        
-        .subtitle {
-            font-size: 1.3rem;
-            color: #a0522d;
-            margin-bottom: 20px;
-        }
-        
-        .animation-container {
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 20px;
+            z-index: 10;
             padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-            margin-bottom: 30px;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            max-width: 500px;
+            width: 90%;
+            margin: 0 auto;
             position: relative;
-            overflow: hidden;
-            height: 400px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            backdrop-filter: blur(10px);
         }
         
-        .golden-retriever-gif {
-            max-width: 100%;
-            max-height: 100%;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        /* 小狗形象设计 - 漂浮在页面左侧 */
+        #dog {
+            position: fixed;
+            left: 5%;
+            top: 50%;
+            transform: translateY(-50%);
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            white-space: pre;
+            text-align: center;
+            z-index: 5;
+            font-size: min(3.5vw, 22px);
+            line-height: 1.2;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+            animation: float 4s ease-in-out infinite;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 153, 102, 0.3);
         }
         
-        .controls {
+        @keyframes float {
+            0%, 100% { transform: translateY(-50%) translateX(0); }
+            25% { transform: translateY(-52%) translateX(-5px); }
+            50% { transform: translateY(-48%) translateX(0); }
+            75% { transform: translateY(-52%) translateX(5px); }
+        }
+        
+        .dog-question {
+            font-size: 26px;
+            margin-bottom: 25px;
+            color: #8B4513;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            line-height: 1.5;
+            font-weight: bold;
+        }
+        
+        .question {
+            font-size: 22px;
+            color: #8B4513;
+            margin-bottom: 25px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.7);
+        }
+        
+        .options {
             display: flex;
             justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
+            gap: 25px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
         
         button {
-            background: #8b4513;
+            padding: 12px 25px;
+            font-size: 18px;
+            background: linear-gradient(135deg, #ff9966 0%, #ff7744 100%);
             color: white;
             border: none;
-            padding: 12px 25px;
-            border-radius: 50px;
-            font-size: 1rem;
+            border-radius: 30px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            transition: all 0.3s;
+            box-shadow: 0 6px 15px rgba(255, 119, 68, 0.3);
+            font-weight: bold;
+            min-width: 120px;
         }
         
         button:hover {
-            background: #a0522d;
             transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 8px 20px rgba(255, 119, 68, 0.4);
         }
         
-        button:active {
-            transform: translateY(1px);
+        .input-container {
+            margin-top: 25px;
+            display: none;
         }
         
-        .info {
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-        
-        .info h2 {
-            color: #8b4513;
-            margin-bottom: 15px;
-            font-size: 1.8rem;
-        }
-        
-        .info p {
-            margin-bottom: 15px;
-            text-align: left;
-            font-size: 1.1rem;
-        }
-        
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-        
-        .feature {
+        input {
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 2px solid #ff9966;
+            border-radius: 12px;
+            margin-right: 10px;
+            width: 200px;
             background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #ff7744;
+            box-shadow: 0 0 0 3px rgba(255, 119, 68, 0.2);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+        }
+        
+        .ghost {
+            width: 80px;
+            height: 100px;
+            background-color: white;
+            border-radius: 50% 50% 40% 40%;
+            position: fixed;
+            top: 20%;
+            right: 8%;
+            display: none;
+            animation: ghostFloat 5s ease-in-out infinite;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            z-index: 5;
+        }
+        
+        @keyframes ghostFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(5deg); }
+            50% { transform: translateY(0) rotate(0deg); }
+            75% { transform: translateY(-10px) rotate(-5deg); }
+        }
+        
+        .ghost-eye {
+            width: 15px;
+            height: 20px;
+            background-color: #333;
+            border-radius: 50%;
+            position: absolute;
+            top: 35px;
+        }
+        
+        .ghost-eye.left {
+            left: 20px;
+        }
+        
+        .ghost-eye.right {
+            right: 20px;
+        }
+        
+        .ghost-mouth {
+            width: 30px;
+            height: 15px;
+            border-bottom: 5px solid #333;
+            border-radius: 0 0 50% 50%;
+            position: absolute;
+            top: 65px;
+            left: 25px;
+        }
+        
+        .message {
+            font-size: 20px;
+            color: #8B4513;
+            margin-top: 20px;
+            min-height: 60px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.7);
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.7);
             border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            border-left: 4px solid #ff9966;
         }
         
-        .feature:hover {
-            transform: translateY(-5px);
+        /* 飘落元素 */
+        .falling-element {
+            position: absolute;
+            font-size: 28px;
+            z-index: 2;
+            user-select: none;
+            pointer-events: none;
+            animation: falling linear infinite;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
         
-        .feature i {
-            font-size: 2.5rem;
-            color: #ffb347;
-            margin-bottom: 15px;
+        @keyframes falling {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(calc(100vh + 100px)) rotate(360deg);
+                opacity: 0.7;
+            }
         }
         
-        .feature h3 {
-            color: #8b4513;
-            margin-bottom: 10px;
+        .music-control {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #ff9966 0%, #ff7744 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 6px 15px rgba(255, 119, 68, 0.3);
+            transition: all 0.3s;
+            font-size: 20px;
         }
         
-        footer {
-            margin-top: 30px;
-            color: #8b4513;
-            font-size: 0.9rem;
+        .music-control:hover {
+            transform: scale(1.1);
+        }
+        
+        /* 趣味回答样式 */
+        .fun-response {
+            font-size: 24px;
+            color: #ff3366;
+            font-weight: bold;
+            margin-top: 15px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
         
         /* 响应式设计 */
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2.2rem;
+            #dog {
+                position: relative;
+                left: auto;
+                top: auto;
+                transform: none;
+                margin: 0 auto 20px;
+                font-size: 18px;
+                animation: float 4s ease-in-out infinite;
             }
             
-            .animation-container {
-                height: 300px;
-                padding: 15px;
+            @keyframes float {
+                0%, 100% { transform: translateY(0); }
+                25% { transform: translateY(-5px); }
+                50% { transform: translateY(0); }
+                75% { transform: translateY(-3px); }
             }
             
-            .controls {
+            .container {
+                padding: 20px;
+            }
+            
+            .dog-question {
+                font-size: 22px;
+            }
+            
+            .options {
                 flex-direction: column;
                 align-items: center;
+                gap: 15px;
             }
             
             button {
-                width: 200px;
+                width: 100%;
+                max-width: 200px;
+            }
+            
+            .ghost {
+                position: absolute;
+                top: 10%;
+                right: 5%;
+                width: 60px;
+                height: 80px;
             }
         }
         
         @media (max-width: 480px) {
-            h1 {
-                font-size: 1.8rem;
+            body {
+                padding: 10px;
             }
             
-            .animation-container {
-                height: 250px;
+            .container {
+                padding: 15px;
+            }
+            
+            .dog-question {
+                font-size: 20px;
+            }
+            
+            #dog {
+                font-size: 16px;
+                padding: 10px;
+            }
+            
+            .music-control {
+                top: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>活泼可爱的小金毛</h1>
-            <p class="subtitle">观看这只活泼可爱的小金毛的精彩动画表演！</p>
-        </header>
-        
-        <div class="animation-container">
-            <img src="https://media.giphy.com/media/3o7aD2d7hy9ktXNDP2/giphy.gif" alt="活泼可爱的小金毛" class="golden-retriever-gif" id="puppyGif">
-        </div>
-        
-        <div class="controls">
-            <button id="playBtn">
-                <i class="fas fa-play"></i> 播放动画
-            </button>
-            <button id="pauseBtn">
-                <i class="fas fa-pause"></i> 暂停动画
-            </button>
-            <button id="changeGifBtn">
-                <i class="fas fa-sync-alt"></i> 切换动画
-            </button>
-            <button id="fullscreenBtn">
-                <i class="fas fa-expand"></i> 全屏观看
-            </button>
-        </div>
-        
-        <div class="info">
-            <h2>关于金毛寻回犬</h2>
-            <p>金毛寻回犬是一种活泼、友好且聪明的犬种，以其金色的毛发和温和的性格而闻名。</p>
-            <p>它们非常喜欢与人互动，是优秀的家庭宠物，也非常适合作为服务犬。</p>
-            <p>这只动画小金毛展示了它们典型的活泼行为：摇尾巴、蹦跳、玩耍和好奇地探索周围环境。</p>
-        </div>
-        
-        <div class="features">
-            <div class="feature">
-                <i class="fas fa-heart"></i>
-                <h3>友好温顺</h3>
-                <p>金毛犬性格温和，对儿童和其他宠物都非常友好。</p>
-            </div>
-            <div class="feature">
-                <i class="fas fa-brain"></i>
-                <h3>聪明易训</h3>
-                <p>在犬类智商排名中名列前茅，学习能力强，易于训练。</p>
-            </div>
-            <div class="feature">
-                <i class="fas fa-running"></i>
-                <h3>活泼好动</h3>
-                <p>精力充沛，喜欢户外活动和各种游戏。</p>
-            </div>
-            <div class="feature">
-                <i class="fas fa-home"></i>
-                <h3>家庭伴侣</h3>
-                <p>忠诚可靠，是理想的家庭宠物和伴侣犬。</p>
-            </div>
-        </div>
-        
-        <footer>
-            <p>© 2023 活泼可爱的小金毛 | 设计制作：爱狗人士</p>
-        </footer>
+    <div class="music-control" id="musicControl">
+        <i>♪</i>
     </div>
+    
+    <!-- 小狗放在容器外部，漂浮在页面左侧 -->
+    <pre id="dog">           / \__
+          (    @\____
+           /         O
+          /   (_____/
+         /_____/   U</pre>
+    
+    <div class="container">
+        <!-- 狗狗的提问 -->
+        <div class="dog-question">汪汪~ 姐姐知道今天是什么节日吗？ 🐶</div>
+        
+        <div class="ghost">
+            <div class="ghost-eye left"></div>
+            <div class="ghost-eye right"></div>
+            <div class="ghost-mouth"></div>
+        </div>
+        
+        <div class="question" id="question"></div>
+        
+        <div class="options" id="options">
+            <button id="knowBtn">知道</button>
+            <button id="dontKnowBtn">不知道</button>
+        </div>
+        
+        <div class="input-container" id="inputContainer">
+            <input type="text" id="answerInput" placeholder="请输入节日名称">
+            <button class="submit-btn" id="submitBtn">提交</button>
+        </div>
+        
+        <div class="message" id="message"></div>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="https://github.com/2057722964-source/kkz/blob/main/%E9%80%86%E6%97%B6%E9%92%88%E5%90%91%20-%20%E6%99%9A%E6%98%9F.mp3?raw=true" type="audio/mpeg">
+    </audio>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const puppyGif = document.getElementById('puppyGif');
-            const playBtn = document.getElementById('playBtn');
-            const pauseBtn = document.getElementById('pauseBtn');
-            const changeGifBtn = document.getElementById('changeGifBtn');
-            const fullscreenBtn = document.getElementById('fullscreenBtn');
+            const bgMusic = document.getElementById('bgMusic');
+            const musicControl = document.getElementById('musicControl');
+            const knowBtn = document.getElementById('knowBtn');
+            const dontKnowBtn = document.getElementById('dontKnowBtn');
+            const inputContainer = document.getElementById('inputContainer');
+            const answerInput = document.getElementById('answerInput');
+            const submitBtn = document.getElementById('submitBtn');
+            const question = document.getElementById('question');
+            const options = document.getElementById('options');
+            const message = document.getElementById('message');
+            const ghost = document.querySelector('.ghost');
+            const dog = document.getElementById('dog');
             
-            // 小金毛GIF资源数组
-            const gifUrls = [
-                "https://media.giphy.com/media/3o7aD2d7hy9ktXNDP2/giphy.gif",
-                "https://media.giphy.com/media/l0HlHFRbmaZtBRhY4/giphy.gif",
-                "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif",
-                "https://media.giphy.com/media/26ufjJgVk0962R0y4/giphy.gif",
-                "https://media.giphy.com/media/l0HU7JI1m1eEwz7XG/giphy.gif"
-            ];
+            // 小狗状态
+            const dogStates = {
+                normal: `           / \\__
+          (    @\\____
+           /         O
+          /   (_____/
+         /_____/   U`,
+                blink: `           / \\__
+          (    -\\____
+           /         O
+          /   (_____/
+         /_____/   U`,
+                sad: `           / \\__
+          (    T\\____
+           /         O
+          /   (_____/
+         /_____/   U`,
+                happy: `           / \\__
+          (    ^\\____
+           /         O
+          /   (_____/
+         /_____/   U`,
+                curious: `           / \\__
+          (    ?\\____
+           /         O
+          /   (_____/
+         /_____/   U`,
+                excited: `           / \\__
+          (    ★\\____
+           /         O
+          /   (_____/
+         /_____/   U`,
+                wagging: `           / \\__
+          (    @\\____
+           /         O
+          /   (_____/~~
+         /_____/   U`
+            };
+
+            // 尝试自动播放音乐
+            bgMusic.volume = 0.3;
+            const playPromise = bgMusic.play();
             
-            let currentGifIndex = 0;
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("自动播放被阻止，需要用户交互");
+                    musicControl.style.display = 'flex';
+                });
+            }
             
-            // 播放动画
-            playBtn.addEventListener('click', function() {
-                puppyGif.src = puppyGif.src; // 重新加载GIF以播放
+            // 音乐控制
+            musicControl.addEventListener('click', function() {
+                if (bgMusic.paused) {
+                    bgMusic.play();
+                    musicControl.innerHTML = '♫';
+                } else {
+                    bgMusic.pause();
+                    musicControl.innerHTML = '♪';
+                }
             });
             
-            // 暂停动画
-            pauseBtn.addEventListener('click', function() {
-                // 暂停GIF动画的技巧：替换为静态图片
-                const currentSrc = puppyGif.src;
-                puppyGif.src = currentSrc.replace('.gif', '.gif?t=' + Date.now());
-                setTimeout(() => {
-                    puppyGif.src = currentSrc;
-                }, 100);
+            // 知道按钮点击事件
+            knowBtn.addEventListener('click', function() {
+                question.textContent = "那姐姐告诉我吧～";
+                options.style.display = 'none';
+                inputContainer.style.display = 'block';
+                dog.textContent = dogStates.curious;
             });
             
-            // 切换GIF
-            changeGifBtn.addEventListener('click', function() {
-                currentGifIndex = (currentGifIndex + 1) % gifUrls.length;
-                puppyGif.src = gifUrls[currentGifIndex];
-            });
-            
-            // 全屏观看
-            fullscreenBtn.addEventListener('click', function() {
-                const container = document.querySelector('.animation-container');
+            // 不知道按钮点击事件
+            dontKnowBtn.addEventListener('click', function() {
+                question.style.display = 'none';
+                options.style.display = 'none';
+                message.innerHTML = "那就由汪汪我告诉姐姐是什么节日吧～<br><strong>万圣节🎃！</strong><br>姐姐万圣节快乐哦！";
+                dog.textContent = dogStates.wagging;
+                createFallingElements();
                 
-                if (container.requestFullscreen) {
-                    container.requestFullscreen();
-                } else if (container.webkitRequestFullscreen) {
-                    container.webkitRequestFullscreen();
-                } else if (container.msRequestFullscreen) {
-                    container.msRequestFullscreen();
+                // 摇尾巴动画
+                startTailWagging();
+            });
+            
+            // 提交按钮点击事件
+            submitBtn.addEventListener('click', function() {
+                const answer = answerInput.value.trim();
+                if (answer === "万圣节") {
+                    inputContainer.style.display = 'none';
+                    question.style.display = 'none';
+                    message.innerHTML = `
+                        <div style="color: #ff3366; font-weight: bold; font-size: 26px; margin-bottom: 10px;">
+                            BINGO~ 🎉
+                        </div>
+                        <div style="font-size: 22px; margin-bottom: 10px;">
+                            姐姐万圣节快乐！
+                        </div>
+                        <div class="fun-response">
+                            天天开心，事事顺心！✨
+                        </div>
+                    `;
+                    ghost.style.display = 'block';
+                    dog.textContent = dogStates.excited;
+                    createFallingElements();
+                    
+                    // 添加额外的庆祝效果
+                    celebrateSuccess();
+                } else {
+                    message.textContent = "不对哦，再想想看～";
+                    dog.textContent = dogStates.sad;
+                    setTimeout(() => {
+                        message.textContent = "";
+                        dog.textContent = dogStates.normal;
+                    }, 2000);
                 }
             });
             
-            // 添加一些交互效果
-            puppyGif.addEventListener('mouseover', function() {
-                this.style.transform = 'scale(1.05)';
-                this.style.transition = 'transform 0.3s ease';
-            });
+            // 摇尾巴动画
+            function startTailWagging() {
+                let wagCount = 0;
+                const wagInterval = setInterval(() => {
+                    if (wagCount % 2 === 0) {
+                        dog.textContent = dogStates.wagging;
+                    } else {
+                        dog.textContent = dogStates.happy;
+                    }
+                    
+                    wagCount++;
+                    if (wagCount >= 6) {
+                        clearInterval(wagInterval);
+                        dog.textContent = dogStates.happy;
+                    }
+                }, 300);
+            }
             
-            puppyGif.addEventListener('mouseout', function() {
-                this.style.transform = 'scale(1)';
-            });
+            // 成功庆祝效果
+            function celebrateSuccess() {
+                // 添加额外的飘落元素
+                const celebrationElements = ['🎉', '✨', '🌟', '💫', '🎊', '🐶', '🦴'];
+                
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(() => {
+                        const element = document.createElement('div');
+                        element.className = 'falling-element';
+                        element.textContent = celebrationElements[Math.floor(Math.random() * celebrationElements.length)];
+                        element.style.left = `${Math.random() * window.innerWidth}px`;
+                        element.style.fontSize = `${Math.random() * 25 + 25}px`;
+                        element.style.animationDuration = `${Math.random() * 8 + 8}s`;
+                        element.style.color = getRandomColor();
+                        document.body.appendChild(element);
+                        
+                        setTimeout(() => {
+                            if (element.parentNode) {
+                                document.body.removeChild(element);
+                            }
+                        }, 15000);
+                    }, i * 200);
+                }
+                
+                // 小狗兴奋跳跃
+                let jumpCount = 0;
+                const jumpInterval = setInterval(() => {
+                    dog.style.transform = 'translateY(-50%) translateY(-20px)';
+                    setTimeout(() => {
+                        dog.style.transform = 'translateY(-50%)';
+                    }, 300);
+                    
+                    jumpCount++;
+                    if (jumpCount >= 5) {
+                        clearInterval(jumpInterval);
+                    }
+                }, 600);
+                
+                // 摇尾巴庆祝
+                startTailWagging();
+            }
             
-            // 添加键盘控制
-            document.addEventListener('keydown', function(e) {
-                switch(e.key) {
-                    case ' ':
-                        // 空格键切换播放/暂停
-                        if (puppyGif.src.includes('?')) {
-                            puppyGif.src = gifUrls[currentGifIndex];
-                        } else {
-                            puppyGif.src = puppyGif.src + '?t=' + Date.now();
+            // 随机颜色生成
+            function getRandomColor() {
+                const colors = ['#ff3366', '#ff6633', '#ff33cc', '#33ff66', '#3366ff', '#ff33ff'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+            
+            // 小狗眨眼动画
+            function startDogBlinking() {
+                setInterval(() => {
+                    if (dog.textContent === dogStates.normal) {
+                        dog.textContent = dogStates.blink;
+                        setTimeout(() => {
+                            dog.textContent = dogStates.normal;
+                        }, 200);
+                    }
+                }, 3000);
+            }
+            
+            // 开始小狗眨眼
+            startDogBlinking();
+            
+            // 创建飘落元素特效
+            function createFallingElements() {
+                const elements = ['👻', '🎃', '🍬', '🦇', '🍭', '🐶', '🦴'];
+                
+                for (let i = 0; i < 30; i++) {
+                    setTimeout(() => {
+                        const element = document.createElement('div');
+                        element.className = 'falling-element';
+                        
+                        // 随机选择元素
+                        const randomElement = elements[Math.floor(Math.random() * elements.length)];
+                        element.textContent = randomElement;
+                        
+                        // 随机位置
+                        const x = Math.random() * window.innerWidth;
+                        element.style.left = `${x}px`;
+                        
+                        // 随机大小
+                        const size = Math.random() * 20 + 20;
+                        element.style.fontSize = `${size}px`;
+                        
+                        // 随机动画时长
+                        const duration = Math.random() * 10 + 10;
+                        element.style.animationDuration = `${duration}s`;
+                        
+                        // 随机延迟
+                        const delay = Math.random() * 5;
+                        element.style.animationDelay = `${delay}s`;
+                        
+                        document.body.appendChild(element);
+                        
+                        // 动画结束后移除元素
+                        setTimeout(() => {
+                            if (element.parentNode) {
+                                document.body.removeChild(element);
+                            }
+                        }, (duration + delay) * 1000);
+                    }, i * 500);
+                }
+                
+                // 持续创建新元素
+                const fallingInterval = setInterval(() => {
+                    const element = document.createElement('div');
+                    element.className = 'falling-element';
+                    
+                    // 随机选择元素
+                    const randomElement = elements[Math.floor(Math.random() * elements.length)];
+                    element.textContent = randomElement;
+                    
+                    // 随机位置
+                    const x = Math.random() * window.innerWidth;
+                    element.style.left = `${x}px`;
+                    
+                    // 随机大小
+                    const size = Math.random() * 20 + 20;
+                    element.style.fontSize = `${size}px`;
+                    
+                    // 随机动画时长
+                    const duration = Math.random() * 10 + 10;
+                    element.style.animationDuration = `${duration}s`;
+                    
+                    document.body.appendChild(element);
+                    
+                    // 动画结束后移除元素
+                    setTimeout(() => {
+                        if (element.parentNode) {
+                            document.body.removeChild(element);
                         }
-                        break;
-                    case 'ArrowRight':
-                        // 右箭头切换下一个GIF
-                        changeGifBtn.click();
-                        break;
-                    case 'f':
-                    case 'F':
-                        // F键全屏
-                        fullscreenBtn.click();
-                        break;
-                }
-            });
+                    }, duration * 1000);
+                }, 2000);
+                
+                // 15秒后停止创建新元素
+                setTimeout(() => {
+                    clearInterval(fallingInterval);
+                }, 15000);
+            }
         });
     </script>
 </body>
