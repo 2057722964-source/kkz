@@ -14,95 +14,124 @@
         body {
             background: linear-gradient(135deg, #ffcce6 0%, #ff99cc 100%);
             font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
             overflow: hidden;
             position: relative;
             color: #8B4513;
+            padding: 20px;
         }
         
         .container {
             text-align: center;
             z-index: 10;
-            padding: 20px;
-            background-color: rgba(255, 255, 255, 0.7);
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
             max-width: 500px;
             width: 90%;
+            margin: 0 auto;
+            position: relative;
+            backdrop-filter: blur(10px);
         }
         
-        /* 小猫形象设计 - 从您提供的代码中提取 */
+        /* 小猫形象设计 - 漂浮在页面左侧 */
         #cat {
-            position: relative;
+            position: fixed;
+            left: 5%;
+            top: 50%;
+            transform: translateY(-50%);
             font-family: 'Courier New', monospace;
             font-weight: bold;
             white-space: pre;
             text-align: center;
-            z-index: 10;
-            transition: all 1s ease;
-            font-size: min(4vw, 24px);
+            z-index: 5;
+            font-size: min(3.5vw, 22px);
             line-height: 1.2;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-            margin: 0 auto 30px;
-            animation: float 3s ease-in-out infinite;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+            animation: float 4s ease-in-out infinite;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 153, 102, 0.3);
         }
         
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            0%, 100% { transform: translateY(-50%) translateX(0); }
+            25% { transform: translateY(-52%) translateX(-5px); }
+            50% { transform: translateY(-48%) translateX(0); }
+            75% { transform: translateY(-52%) translateX(5px); }
+        }
+        
+        .cat-question {
+            font-size: 26px;
+            margin-bottom: 25px;
+            color: #8B4513;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+            line-height: 1.5;
+            font-weight: bold;
         }
         
         .question {
-            font-size: 24px;
+            font-size: 22px;
             color: #8B4513;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
             text-shadow: 1px 1px 2px rgba(255,255,255,0.7);
         }
         
         .options {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 25px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
         
         button {
-            padding: 10px 20px;
+            padding: 12px 25px;
             font-size: 18px;
-            background-color: #ff9966;
+            background: linear-gradient(135deg, #ff9966 0%, #ff7744 100%);
             color: white;
             border: none;
-            border-radius: 25px;
+            border-radius: 30px;
             cursor: pointer;
             transition: all 0.3s;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 15px rgba(255, 119, 68, 0.3);
+            font-weight: bold;
+            min-width: 120px;
         }
         
         button:hover {
-            background-color: #ff7744;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 119, 68, 0.4);
         }
         
         .input-container {
-            margin-top: 20px;
+            margin-top: 25px;
             display: none;
         }
         
         input {
-            padding: 10px;
-            font-size: 18px;
+            padding: 12px 15px;
+            font-size: 16px;
             border: 2px solid #ff9966;
-            border-radius: 10px;
+            border-radius: 12px;
             margin-right: 10px;
             width: 200px;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #ff7744;
+            box-shadow: 0 0 0 3px rgba(255, 119, 68, 0.2);
         }
         
         .submit-btn {
-            background-color: #8B4513;
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
         }
         
         .ghost {
@@ -110,18 +139,26 @@
             height: 100px;
             background-color: white;
             border-radius: 50% 50% 40% 40%;
-            position: absolute;
-            top: 50px;
-            right: 50px;
+            position: fixed;
+            top: 20%;
+            right: 8%;
             display: none;
-            animation: float 3s ease-in-out infinite;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            animation: ghostFloat 5s ease-in-out infinite;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            z-index: 5;
+        }
+        
+        @keyframes ghostFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(5deg); }
+            50% { transform: translateY(0) rotate(0deg); }
+            75% { transform: translateY(-10px) rotate(-5deg); }
         }
         
         .ghost-eye {
             width: 15px;
             height: 20px;
-            background-color: black;
+            background-color: #333;
             border-radius: 50%;
             position: absolute;
             top: 35px;
@@ -138,7 +175,7 @@
         .ghost-mouth {
             width: 30px;
             height: 15px;
-            border-bottom: 5px solid black;
+            border-bottom: 5px solid #333;
             border-radius: 0 0 50% 50%;
             position: absolute;
             top: 65px;
@@ -146,21 +183,26 @@
         }
         
         .message {
-            font-size: 22px;
+            font-size: 20px;
             color: #8B4513;
             margin-top: 20px;
             min-height: 60px;
             text-shadow: 1px 1px 2px rgba(255,255,255,0.7);
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 15px;
+            border-left: 4px solid #ff9966;
         }
         
         /* 飘落元素 */
         .falling-element {
             position: absolute;
-            font-size: 30px;
-            z-index: 5;
+            font-size: 28px;
+            z-index: 2;
             user-select: none;
             pointer-events: none;
             animation: falling linear infinite;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
         }
         
         @keyframes falling {
@@ -175,11 +217,13 @@
         }
         
         .music-control {
-            position: absolute;
+            position: fixed;
             top: 20px;
             right: 20px;
-            background-color: rgba(255,255,255,0.7);
-            border-radius: 50%;
+            background: linear-gradient(135deg, #ff9966 0%, #ff7744 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
             width: 50px;
             height: 50px;
             display: flex;
@@ -187,25 +231,102 @@
             align-items: center;
             cursor: pointer;
             z-index: 100;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 6px 15px rgba(255, 119, 68, 0.3);
             transition: all 0.3s;
+            font-size: 20px;
         }
         
         .music-control:hover {
             transform: scale(1.1);
         }
         
-        .music-control i {
+        /* 趣味回答样式 */
+        .fun-response {
             font-size: 24px;
-            color: #ff6699;
+            color: #ff3366;
+            font-weight: bold;
+            margin-top: 15px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            animation: pulse 1.5s infinite;
         }
         
-        .cat-question {
-            font-size: 28px;
-            margin-bottom: 20px;
-            color: #8B4513;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-            line-height: 1.4;
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            #cat {
+                position: relative;
+                left: auto;
+                top: auto;
+                transform: none;
+                margin: 0 auto 20px;
+                font-size: 18px;
+                animation: float 4s ease-in-out infinite;
+            }
+            
+            @keyframes float {
+                0%, 100% { transform: translateY(0); }
+                25% { transform: translateY(-5px); }
+                50% { transform: translateY(0); }
+                75% { transform: translateY(-3px); }
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+            .cat-question {
+                font-size: 22px;
+            }
+            
+            .options {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+            }
+            
+            button {
+                width: 100%;
+                max-width: 200px;
+            }
+            
+            .ghost {
+                position: absolute;
+                top: 10%;
+                right: 5%;
+                width: 60px;
+                height: 80px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+            
+            .cat-question {
+                font-size: 20px;
+            }
+            
+            #cat {
+                font-size: 16px;
+                padding: 10px;
+            }
+            
+            .music-control {
+                top: 15px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 18px;
+            }
         }
     </style>
 </head>
@@ -214,14 +335,14 @@
         <i>♪</i>
     </div>
     
+    <!-- 小猫放在容器外部，漂浮在页面左侧 -->
+    <pre id="cat">           /\_/\  
+          ( o.o )
+           > ^ <  </pre>
+    
     <div class="container">
         <!-- 猫猫的提问 -->
         <div class="cat-question">喵喵~ 姐姐知道今天是什么节日吗？ (=^･ω･^=)</div>
-        
-        <!-- 使用字符组成的小猫形象 -->
-        <pre id="cat">           /\_/\  
-          ( o.o )
-           > ^ <  </pre>
         
         <div class="ghost">
             <div class="ghost-eye left"></div>
@@ -268,7 +389,10 @@
                 normal: "           /\\_/\\  \n          ( o.o ) \n           > ^ <  ",
                 blink: "           /\\_/\\  \n          ( -.- ) \n           > ^ <  ",
                 sad: "           /\\_/\\  \n          ( T.T ) \n           > ^ <  ",
-                happy: "           /\\_/\\  \n          ( ^.^ ) \n           > ^ <  "
+                happy: "           /\\_/\\  \n          ( ^.^ ) \n           > ^ <  ",
+                curious: "           /\\_/\\  \n          ( O.O ) \n           > ^ <  ",
+                excited: "           /\\_/\\  \n          ( ★.★ ) \n           > ^ <  ",
+                purring: "           /\\_/\\  \n          ( ~.~ ) \n           > ^ <  "
             };
 
             // 尝试自动播放音乐
@@ -286,10 +410,10 @@
             musicControl.addEventListener('click', function() {
                 if (bgMusic.paused) {
                     bgMusic.play();
-                    musicControl.innerHTML = '<i>♪</i>';
+                    musicControl.innerHTML = '♫';
                 } else {
                     bgMusic.pause();
-                    musicControl.innerHTML = '<i>🔇</i>';
+                    musicControl.innerHTML = '♪';
                 }
             });
             
@@ -298,16 +422,19 @@
                 question.textContent = "那姐姐告诉我吧～";
                 options.style.display = 'none';
                 inputContainer.style.display = 'block';
-                cat.textContent = catStates.happy;
+                cat.textContent = catStates.curious;
             });
             
             // 不知道按钮点击事件
             dontKnowBtn.addEventListener('click', function() {
                 question.style.display = 'none';
                 options.style.display = 'none';
-                message.textContent = "那就由喵喵我告诉姐姐是什么节日吧～万圣节🎃！姐姐万圣节快乐哦！";
-                cat.textContent = catStates.happy;
+                message.innerHTML = "那就由喵喵我告诉姐姐是什么节日吧～<br><strong>万圣节🎃！</strong><br>姐姐万圣节快乐哦！";
+                cat.textContent = catStates.purring;
                 createFallingElements();
+                
+                // 开心呼噜动画
+                startPurring();
             });
             
             // 提交按钮点击事件
@@ -316,10 +443,23 @@
                 if (answer === "万圣节") {
                     inputContainer.style.display = 'none';
                     question.style.display = 'none';
-                    message.textContent = "姐姐万圣节快乐哦！";
+                    message.innerHTML = `
+                        <div style="color: #ff3366; font-weight: bold; font-size: 26px; margin-bottom: 10px;">
+                            BINGO~ 🎉
+                        </div>
+                        <div style="font-size: 22px; margin-bottom: 10px;">
+                            姐姐万圣节快乐！
+                        </div>
+                        <div class="fun-response">
+                            天天开心，事事顺心！✨
+                        </div>
+                    `;
                     ghost.style.display = 'block';
-                    cat.textContent = catStates.happy;
+                    cat.textContent = catStates.excited;
                     createFallingElements();
+                    
+                    // 添加额外的庆祝效果
+                    celebrateSuccess();
                 } else {
                     message.textContent = "不对哦，再想想看～";
                     cat.textContent = catStates.sad;
@@ -329,6 +469,72 @@
                     }, 2000);
                 }
             });
+            
+            // 开心呼噜动画
+            function startPurring() {
+                let purrCount = 0;
+                const purrInterval = setInterval(() => {
+                    if (purrCount % 2 === 0) {
+                        cat.textContent = catStates.purring;
+                    } else {
+                        cat.textContent = catStates.happy;
+                    }
+                    
+                    purrCount++;
+                    if (purrCount >= 6) {
+                        clearInterval(purrInterval);
+                        cat.textContent = catStates.happy;
+                    }
+                }, 300);
+            }
+            
+            // 成功庆祝效果
+            function celebrateSuccess() {
+                // 添加额外的飘落元素
+                const celebrationElements = ['🎉', '✨', '🌟', '💫', '🎊', '🐱', '🐾'];
+                
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(() => {
+                        const element = document.createElement('div');
+                        element.className = 'falling-element';
+                        element.textContent = celebrationElements[Math.floor(Math.random() * celebrationElements.length)];
+                        element.style.left = `${Math.random() * window.innerWidth}px`;
+                        element.style.fontSize = `${Math.random() * 25 + 25}px`;
+                        element.style.animationDuration = `${Math.random() * 8 + 8}s`;
+                        element.style.color = getRandomColor();
+                        document.body.appendChild(element);
+                        
+                        setTimeout(() => {
+                            if (element.parentNode) {
+                                document.body.removeChild(element);
+                            }
+                        }, 15000);
+                    }, i * 200);
+                }
+                
+                // 小猫兴奋跳跃
+                let jumpCount = 0;
+                const jumpInterval = setInterval(() => {
+                    cat.style.transform = 'translateY(-50%) translateY(-20px)';
+                    setTimeout(() => {
+                        cat.style.transform = 'translateY(-50%)';
+                    }, 300);
+                    
+                    jumpCount++;
+                    if (jumpCount >= 5) {
+                        clearInterval(jumpInterval);
+                    }
+                }, 600);
+                
+                // 开心呼噜庆祝
+                startPurring();
+            }
+            
+            // 随机颜色生成
+            function getRandomColor() {
+                const colors = ['#ff3366', '#ff6633', '#ff33cc', '#33ff66', '#3366ff', '#ff33ff'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
             
             // 小猫眨眼动画
             function startCatBlinking() {
@@ -347,7 +553,7 @@
             
             // 创建飘落元素特效
             function createFallingElements() {
-                const elements = ['👻', '🎃', '🍬', '🦇', '🍭'];
+                const elements = ['👻', '🎃', '🍬', '🦇', '🍭', '🐱', '🐾'];
                 
                 for (let i = 0; i < 30; i++) {
                     setTimeout(() => {
@@ -386,7 +592,7 @@
                 }
                 
                 // 持续创建新元素
-                setInterval(() => {
+                const fallingInterval = setInterval(() => {
                     const element = document.createElement('div');
                     element.className = 'falling-element';
                     
@@ -415,6 +621,11 @@
                         }
                     }, duration * 1000);
                 }, 2000);
+                
+                // 15秒后停止创建新元素
+                setTimeout(() => {
+                    clearInterval(fallingInterval);
+                }, 15000);
             }
         });
     </script>
