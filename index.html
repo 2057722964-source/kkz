@@ -37,10 +37,7 @@
         
         /* 小猫形象设计 - 从您提供的代码中提取 */
         #cat {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            position: relative;
             font-family: 'Courier New', monospace;
             font-weight: bold;
             white-space: pre;
@@ -50,12 +47,13 @@
             font-size: min(4vw, 24px);
             line-height: 1.2;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 0 auto 30px;
             animation: float 3s ease-in-out infinite;
         }
         
         @keyframes float {
-            0%, 100% { transform: translate(-50%, -50%); }
-            50% { transform: translate(-50%, -55%); }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
         
         .question {
@@ -202,11 +200,12 @@
             color: #ff6699;
         }
         
-        .title {
-            font-size: 32px;
+        .cat-question {
+            font-size: 28px;
             margin-bottom: 20px;
             color: #8B4513;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            line-height: 1.4;
         }
     </style>
 </head>
@@ -216,9 +215,10 @@
     </div>
     
     <div class="container">
-        <h1 class="title">special</h1>
+        <!-- 猫猫的提问 -->
+        <div class="cat-question">喵喵~ 姐姐知道今天是什么节日吗？ (=^･ω･^=)</div>
         
-        <!-- 使用您提供的小猫形象 -->
+        <!-- 使用字符组成的小猫形象 -->
         <pre id="cat">           /\_/\  
           ( o.o )
            > ^ <  </pre>
@@ -229,7 +229,7 @@
             <div class="ghost-mouth"></div>
         </div>
         
-        <div class="question" id="question">姐姐知道今天是什么节日吗？</div>
+        <div class="question" id="question"></div>
         
         <div class="options" id="options">
             <button id="knowBtn">知道</button>
@@ -261,7 +261,16 @@
             const options = document.getElementById('options');
             const message = document.getElementById('message');
             const ghost = document.querySelector('.ghost');
+            const cat = document.getElementById('cat');
             
+            // 小猫状态
+            const catStates = {
+                normal: "           /\\_/\\  \n          ( o.o ) \n           > ^ <  ",
+                blink: "           /\\_/\\  \n          ( -.- ) \n           > ^ <  ",
+                sad: "           /\\_/\\  \n          ( T.T ) \n           > ^ <  ",
+                happy: "           /\\_/\\  \n          ( ^.^ ) \n           > ^ <  "
+            };
+
             // 尝试自动播放音乐
             bgMusic.volume = 0.3;
             const playPromise = bgMusic.play();
@@ -289,6 +298,7 @@
                 question.textContent = "那姐姐告诉我吧～";
                 options.style.display = 'none';
                 inputContainer.style.display = 'block';
+                cat.textContent = catStates.happy;
             });
             
             // 不知道按钮点击事件
@@ -296,6 +306,7 @@
                 question.style.display = 'none';
                 options.style.display = 'none';
                 message.textContent = "那就由喵喵我告诉姐姐是什么节日吧～万圣节🎃！姐姐万圣节快乐哦！";
+                cat.textContent = catStates.happy;
                 createFallingElements();
             });
             
@@ -307,14 +318,32 @@
                     question.style.display = 'none';
                     message.textContent = "姐姐万圣节快乐哦！";
                     ghost.style.display = 'block';
+                    cat.textContent = catStates.happy;
                     createFallingElements();
                 } else {
                     message.textContent = "不对哦，再想想看～";
+                    cat.textContent = catStates.sad;
                     setTimeout(() => {
                         message.textContent = "";
+                        cat.textContent = catStates.normal;
                     }, 2000);
                 }
             });
+            
+            // 小猫眨眼动画
+            function startCatBlinking() {
+                setInterval(() => {
+                    if (cat.textContent === catStates.normal) {
+                        cat.textContent = catStates.blink;
+                        setTimeout(() => {
+                            cat.textContent = catStates.normal;
+                        }, 200);
+                    }
+                }, 3000);
+            }
+            
+            // 开始小猫眨眼
+            startCatBlinking();
             
             // 创建飘落元素特效
             function createFallingElements() {
