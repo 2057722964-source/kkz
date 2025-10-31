@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>活泼可爱的小金毛动画</title>
+    <title>活泼可爱的小金毛</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Arial Rounded MT Bold', 'Helvetica Rounded', Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         
         body {
-            background: linear-gradient(135deg, #ffd166 0%, #ffb347 100%);
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
             color: #5a3921;
             line-height: 1.6;
             min-height: 100vh;
@@ -24,7 +25,7 @@
         }
         
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             width: 100%;
             text-align: center;
         }
@@ -34,14 +35,14 @@
         }
         
         h1 {
-            font-size: 2.8rem;
+            font-size: 3rem;
             margin-bottom: 10px;
             color: #8b4513;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
         
         .subtitle {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             color: #a0522d;
             margin-bottom: 20px;
         }
@@ -55,223 +56,24 @@
             position: relative;
             overflow: hidden;
             height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
-        .golden-retriever {
-            position: absolute;
-            width: 180px;
-            height: 150px;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
+        .golden-retriever-gif {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
-        /* 小金毛身体部分 */
-        .body {
-            position: absolute;
-            width: 120px;
-            height: 80px;
-            background: #ffb347;
-            border-radius: 50% 50% 40% 40%;
-            bottom: 0;
-            left: 30px;
-            z-index: 1;
-        }
-        
-        .head {
-            position: absolute;
-            width: 90px;
-            height: 80px;
-            background: #ffb347;
-            border-radius: 45% 45% 40% 40%;
-            bottom: 70px;
-            left: 45px;
-            z-index: 2;
-        }
-        
-        .ear {
-            position: absolute;
-            width: 30px;
-            height: 40px;
-            background: #e69500;
-            border-radius: 50%;
-            z-index: 1;
-        }
-        
-        .ear.left {
-            top: 10px;
-            left: 5px;
-            transform: rotate(-30deg);
-        }
-        
-        .ear.right {
-            top: 10px;
-            right: 5px;
-            transform: rotate(30deg);
-        }
-        
-        .eye {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background: #333;
-            border-radius: 50%;
-            z-index: 3;
-        }
-        
-        .eye.left {
-            top: 30px;
-            left: 20px;
-        }
-        
-        .eye.right {
-            top: 30px;
-            right: 20px;
-        }
-        
-        .nose {
-            position: absolute;
-            width: 15px;
-            height: 10px;
-            background: #5a3921;
-            border-radius: 50%;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 3;
-        }
-        
-        .tail {
-            position: absolute;
-            width: 20px;
-            height: 60px;
-            background: #ffb347;
-            border-radius: 10px;
-            bottom: 30px;
-            right: 10px;
-            transform-origin: top center;
-            z-index: 0;
-        }
-        
-        .leg {
-            position: absolute;
-            width: 20px;
-            height: 50px;
-            background: #ffb347;
-            border-radius: 10px;
-            bottom: -25px;
-            z-index: 0;
-        }
-        
-        .leg.front-left {
-            left: 40px;
-        }
-        
-        .leg.front-right {
-            left: 80px;
-        }
-        
-        .leg.back-left {
-            left: 60px;
-        }
-        
-        .leg.back-right {
-            left: 100px;
-        }
-        
-        /* 动画定义 */
-        @keyframes wag-tail {
-            0%, 100% { transform: rotate(-20deg); }
-            50% { transform: rotate(20deg); }
-        }
-        
-        @keyframes bounce {
-            0%, 100% { bottom: 50px; }
-            50% { bottom: 70px; }
-        }
-        
-        @keyframes walk {
-            0% { left: 50%; }
-            25% { left: 30%; }
-            50% { left: 50%; }
-            75% { left: 70%; }
-            100% { left: 50%; }
-        }
-        
-        @keyframes leg-movement {
-            0%, 100% { height: 50px; }
-            50% { height: 40px; }
-        }
-        
-        @keyframes head-tilt {
-            0%, 100% { transform: translateX(-50%) rotate(0deg); }
-            25% { transform: translateX(-50%) rotate(-10deg); }
-            75% { transform: translateX(-50%) rotate(10deg); }
-        }
-        
-        @keyframes ear-wiggle {
-            0%, 100% { transform: rotate(-30deg); }
-            50% { transform: rotate(-20deg); }
-        }
-        
-        @keyframes ear-wiggle-right {
-            0%, 100% { transform: rotate(30deg); }
-            50% { transform: rotate(20deg); }
-        }
-        
-        @keyframes blink {
-            0%, 90%, 100% { height: 12px; }
-            95% { height: 2px; }
-        }
-        
-        @keyframes sit {
-            0%, 100% { height: 80px; bottom: 0; }
-            50% { height: 60px; bottom: 20px; }
-        }
-        
-        @keyframes lay-down {
-            0%, 100% { height: 80px; width: 120px; }
-            50% { height: 50px; width: 140px; }
-        }
-        
-        /* 动画序列 */
-        .golden-retriever {
-            animation: 
-                walk 20s ease-in-out infinite,
-                bounce 1s ease-in-out infinite,
-                head-tilt 5s ease-in-out infinite;
-        }
-        
-        .tail {
-            animation: wag-tail 0.5s ease-in-out infinite;
-        }
-        
-        .leg {
-            animation: leg-movement 0.5s ease-in-out infinite;
-        }
-        
-        .ear.left {
-            animation: ear-wiggle 2s ease-in-out infinite;
-        }
-        
-        .ear.right {
-            animation: ear-wiggle-right 2s ease-in-out infinite;
-        }
-        
-        .eye {
-            animation: blink 5s ease-in-out infinite;
-        }
-        
-        .body {
-            animation: sit 3s ease-in-out infinite;
-        }
-        
-        /* 控制按钮 */
         .controls {
             display: flex;
             justify-content: center;
             gap: 15px;
             margin-bottom: 30px;
+            flex-wrap: wrap;
         }
         
         button {
@@ -284,6 +86,9 @@
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         button:hover {
@@ -296,47 +101,90 @@
             transform: translateY(1px);
         }
         
-        /* 信息部分 */
         .info {
             background: rgba(255, 255, 255, 0.8);
             border-radius: 15px;
-            padding: 20px;
+            padding: 25px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
         }
         
         .info h2 {
             color: #8b4513;
             margin-bottom: 15px;
+            font-size: 1.8rem;
         }
         
         .info p {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             text-align: left;
+            font-size: 1.1rem;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .feature {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature i {
+            font-size: 2.5rem;
+            color: #ffb347;
+            margin-bottom: 15px;
+        }
+        
+        .feature h3 {
+            color: #8b4513;
+            margin-bottom: 10px;
+        }
+        
+        footer {
+            margin-top: 30px;
+            color: #8b4513;
+            font-size: 0.9rem;
         }
         
         /* 响应式设计 */
-        @media (max-width: 600px) {
+        @media (max-width: 768px) {
             h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
             
             .animation-container {
                 height: 300px;
+                padding: 15px;
             }
             
-            .golden-retriever {
-                width: 140px;
-                height: 120px;
+            .controls {
+                flex-direction: column;
+                align-items: center;
             }
             
-            .body {
-                width: 100px;
-                height: 70px;
+            button {
+                width: 200px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
             }
             
-            .head {
-                width: 70px;
-                height: 65px;
+            .animation-container {
+                height: 250px;
             }
         }
     </style>
@@ -349,117 +197,144 @@
         </header>
         
         <div class="animation-container">
-            <div class="golden-retriever">
-                <div class="body"></div>
-                <div class="head">
-                    <div class="ear left"></div>
-                    <div class="ear right"></div>
-                    <div class="eye left"></div>
-                    <div class="eye right"></div>
-                    <div class="nose"></div>
-                </div>
-                <div class="tail"></div>
-                <div class="leg front-left"></div>
-                <div class="leg front-right"></div>
-                <div class="leg back-left"></div>
-                <div class="leg back-right"></div>
-            </div>
+            <img src="https://media.giphy.com/media/3o7aD2d7hy9ktXNDP2/giphy.gif" alt="活泼可爱的小金毛" class="golden-retriever-gif" id="puppyGif">
         </div>
         
         <div class="controls">
-            <button id="pauseBtn">暂停动画</button>
-            <button id="speedUpBtn">加速</button>
-            <button id="slowDownBtn">减速</button>
-            <button id="resetBtn">重置</button>
+            <button id="playBtn">
+                <i class="fas fa-play"></i> 播放动画
+            </button>
+            <button id="pauseBtn">
+                <i class="fas fa-pause"></i> 暂停动画
+            </button>
+            <button id="changeGifBtn">
+                <i class="fas fa-sync-alt"></i> 切换动画
+            </button>
+            <button id="fullscreenBtn">
+                <i class="fas fa-expand"></i> 全屏观看
+            </button>
         </div>
         
         <div class="info">
             <h2>关于金毛寻回犬</h2>
             <p>金毛寻回犬是一种活泼、友好且聪明的犬种，以其金色的毛发和温和的性格而闻名。</p>
             <p>它们非常喜欢与人互动，是优秀的家庭宠物，也非常适合作为服务犬。</p>
-            <p>这只动画小金毛展示了它们典型的活泼行为：摇尾巴、蹦跳、行走和好奇地歪头。</p>
+            <p>这只动画小金毛展示了它们典型的活泼行为：摇尾巴、蹦跳、玩耍和好奇地探索周围环境。</p>
         </div>
+        
+        <div class="features">
+            <div class="feature">
+                <i class="fas fa-heart"></i>
+                <h3>友好温顺</h3>
+                <p>金毛犬性格温和，对儿童和其他宠物都非常友好。</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-brain"></i>
+                <h3>聪明易训</h3>
+                <p>在犬类智商排名中名列前茅，学习能力强，易于训练。</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-running"></i>
+                <h3>活泼好动</h3>
+                <p>精力充沛，喜欢户外活动和各种游戏。</p>
+            </div>
+            <div class="feature">
+                <i class="fas fa-home"></i>
+                <h3>家庭伴侣</h3>
+                <p>忠诚可靠，是理想的家庭宠物和伴侣犬。</p>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 活泼可爱的小金毛 | 设计制作：爱狗人士</p>
+        </footer>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const goldenRetriever = document.querySelector('.golden-retriever');
-            const tail = document.querySelector('.tail');
-            const legs = document.querySelectorAll('.leg');
-            const ears = document.querySelectorAll('.ear');
-            const eyes = document.querySelectorAll('.eye');
-            const body = document.querySelector('.body');
-            
+            const puppyGif = document.getElementById('puppyGif');
+            const playBtn = document.getElementById('playBtn');
             const pauseBtn = document.getElementById('pauseBtn');
-            const speedUpBtn = document.getElementById('speedUpBtn');
-            const slowDownBtn = document.getElementById('slowDownBtn');
-            const resetBtn = document.getElementById('resetBtn');
+            const changeGifBtn = document.getElementById('changeGifBtn');
+            const fullscreenBtn = document.getElementById('fullscreenBtn');
             
-            let isPaused = false;
-            let animationSpeed = 1;
+            // 小金毛GIF资源数组
+            const gifUrls = [
+                "https://media.giphy.com/media/3o7aD2d7hy9ktXNDP2/giphy.gif",
+                "https://media.giphy.com/media/l0HlHFRbmaZtBRhY4/giphy.gif",
+                "https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.gif",
+                "https://media.giphy.com/media/26ufjJgVk0962R0y4/giphy.gif",
+                "https://media.giphy.com/media/l0HU7JI1m1eEwz7XG/giphy.gif"
+            ];
             
-            // 暂停/继续动画
+            let currentGifIndex = 0;
+            
+            // 播放动画
+            playBtn.addEventListener('click', function() {
+                puppyGif.src = puppyGif.src; // 重新加载GIF以播放
+            });
+            
+            // 暂停动画
             pauseBtn.addEventListener('click', function() {
-                if (isPaused) {
-                    // 继续动画
-                    goldenRetriever.style.animationPlayState = 'running';
-                    tail.style.animationPlayState = 'running';
-                    legs.forEach(leg => leg.style.animationPlayState = 'running');
-                    ears.forEach(ear => ear.style.animationPlayState = 'running');
-                    eyes.forEach(eye => eye.style.animationPlayState = 'running');
-                    body.style.animationPlayState = 'running';
-                    pauseBtn.textContent = '暂停动画';
-                } else {
-                    // 暂停动画
-                    goldenRetriever.style.animationPlayState = 'paused';
-                    tail.style.animationPlayState = 'paused';
-                    legs.forEach(leg => leg.style.animationPlayState = 'paused');
-                    ears.forEach(ear => ear.style.animationPlayState = 'paused');
-                    eyes.forEach(eye => eye.style.animationPlayState = 'paused');
-                    body.style.animationPlayState = 'paused';
-                    pauseBtn.textContent = '继续动画';
-                }
-                isPaused = !isPaused;
+                // 暂停GIF动画的技巧：替换为静态图片
+                const currentSrc = puppyGif.src;
+                puppyGif.src = currentSrc.replace('.gif', '.gif?t=' + Date.now());
+                setTimeout(() => {
+                    puppyGif.src = currentSrc;
+                }, 100);
             });
             
-            // 加速动画
-            speedUpBtn.addEventListener('click', function() {
-                if (animationSpeed < 3) {
-                    animationSpeed += 0.5;
-                    updateAnimationSpeed();
+            // 切换GIF
+            changeGifBtn.addEventListener('click', function() {
+                currentGifIndex = (currentGifIndex + 1) % gifUrls.length;
+                puppyGif.src = gifUrls[currentGifIndex];
+            });
+            
+            // 全屏观看
+            fullscreenBtn.addEventListener('click', function() {
+                const container = document.querySelector('.animation-container');
+                
+                if (container.requestFullscreen) {
+                    container.requestFullscreen();
+                } else if (container.webkitRequestFullscreen) {
+                    container.webkitRequestFullscreen();
+                } else if (container.msRequestFullscreen) {
+                    container.msRequestFullscreen();
                 }
             });
             
-            // 减速动画
-            slowDownBtn.addEventListener('click', function() {
-                if (animationSpeed > 0.5) {
-                    animationSpeed -= 0.5;
-                    updateAnimationSpeed();
+            // 添加一些交互效果
+            puppyGif.addEventListener('mouseover', function() {
+                this.style.transform = 'scale(1.05)';
+                this.style.transition = 'transform 0.3s ease';
+            });
+            
+            puppyGif.addEventListener('mouseout', function() {
+                this.style.transform = 'scale(1)';
+            });
+            
+            // 添加键盘控制
+            document.addEventListener('keydown', function(e) {
+                switch(e.key) {
+                    case ' ':
+                        // 空格键切换播放/暂停
+                        if (puppyGif.src.includes('?')) {
+                            puppyGif.src = gifUrls[currentGifIndex];
+                        } else {
+                            puppyGif.src = puppyGif.src + '?t=' + Date.now();
+                        }
+                        break;
+                    case 'ArrowRight':
+                        // 右箭头切换下一个GIF
+                        changeGifBtn.click();
+                        break;
+                    case 'f':
+                    case 'F':
+                        // F键全屏
+                        fullscreenBtn.click();
+                        break;
                 }
             });
-            
-            // 重置动画速度
-            resetBtn.addEventListener('click', function() {
-                animationSpeed = 1;
-                updateAnimationSpeed();
-            });
-            
-            // 更新动画速度
-            function updateAnimationSpeed() {
-                goldenRetriever.style.animationDuration = 
-                    `${20/animationSpeed}s, ${1/animationSpeed}s, ${5/animationSpeed}s`;
-                tail.style.animationDuration = `${0.5/animationSpeed}s`;
-                legs.forEach(leg => leg.style.animationDuration = `${0.5/animationSpeed}s`);
-                ears.forEach(ear => {
-                    if (ear.classList.contains('left')) {
-                        ear.style.animationDuration = `${2/animationSpeed}s`;
-                    } else {
-                        ear.style.animationDuration = `${2/animationSpeed}s`;
-                    }
-                });
-                eyes.forEach(eye => eye.style.animationDuration = `${5/animationSpeed}s`);
-                body.style.animationDuration = `${3/animationSpeed}s`;
-            }
         });
     </script>
 </body>
