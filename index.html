@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gift</title>
+    <title>special</title>
     <style>
         * {
             margin: 0;
@@ -35,111 +35,27 @@
             width: 90%;
         }
         
-        /* 线条风格小猫 */
-        .cat {
-            width: 200px;
-            height: 200px;
-            margin: 0 auto 30px;
-            position: relative;
-        }
-        
-        .cat-head {
-            width: 120px;
-            height: 120px;
-            border: 3px solid #8B4513;
-            border-radius: 50%;
+        /* 小猫形象设计 - 从您提供的代码中提取 */
+        #cat {
             position: absolute;
-            top: 0;
-            left: 40px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            white-space: pre;
+            text-align: center;
+            z-index: 10;
+            transition: all 1s ease;
+            font-size: min(4vw, 24px);
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            animation: float 3s ease-in-out infinite;
         }
         
-        .cat-body {
-            width: 140px;
-            height: 80px;
-            border: 3px solid #8B4513;
-            border-radius: 60% 60% 40% 40%;
-            position: absolute;
-            top: 90px;
-            left: 30px;
-        }
-        
-        .cat-ear {
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-left: 15px solid transparent;
-            border-right: 15px solid transparent;
-            border-bottom: 25px solid #8B4513;
-            top: -10px;
-        }
-        
-        .cat-ear.left {
-            left: 25px;
-            transform: rotate(-20deg);
-        }
-        
-        .cat-ear.right {
-            right: 25px;
-            transform: rotate(20deg);
-        }
-        
-        .cat-eye {
-            width: 20px;
-            height: 30px;
-            border: 2px solid #8B4513;
-            border-radius: 50%;
-            position: absolute;
-            top: 40px;
-            overflow: hidden;
-        }
-        
-        .cat-eye.left {
-            left: 35px;
-        }
-        
-        .cat-eye.right {
-            right: 35px;
-        }
-        
-        .cat-pupil {
-            width: 10px;
-            height: 15px;
-            background-color: #8B4513;
-            border-radius: 50%;
-            position: absolute;
-            top: 7px;
-            left: 4px;
-        }
-        
-        .cat-nose {
-            width: 15px;
-            height: 8px;
-            border: 2px solid #8B4513;
-            border-radius: 40%;
-            position: absolute;
-            top: 65px;
-            left: 52px;
-        }
-        
-        .cat-mouth {
-            width: 25px;
-            height: 12px;
-            border-bottom: 2px solid #8B4513;
-            border-radius: 0 0 50% 50%;
-            position: absolute;
-            top: 75px;
-            left: 47px;
-        }
-        
-        .cat-tail {
-            width: 100px;
-            height: 15px;
-            border: 2px solid #8B4513;
-            border-radius: 10px;
-            position: absolute;
-            bottom: 30px;
-            right: -60px;
-            transform: rotate(-20deg);
+        @keyframes float {
+            0%, 100% { transform: translate(-50%, -50%); }
+            50% { transform: translate(-50%, -55%); }
         }
         
         .question {
@@ -249,11 +165,6 @@
             animation: falling linear infinite;
         }
         
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-        
         @keyframes falling {
             0% {
                 transform: translateY(-100px) rotate(0deg);
@@ -305,24 +216,12 @@
     </div>
     
     <div class="container">
-        <h1 class="title">万圣节惊喜</h1>
+        <h1 class="title">special</h1>
         
-        <div class="cat">
-            <div class="cat-head">
-                <div class="cat-ear left"></div>
-                <div class="cat-ear right"></div>
-                <div class="cat-eye left">
-                    <div class="cat-pupil"></div>
-                </div>
-                <div class="cat-eye right">
-                    <div class="cat-pupil"></div>
-                </div>
-                <div class="cat-nose"></div>
-                <div class="cat-mouth"></div>
-            </div>
-            <div class="cat-body"></div>
-            <div class="cat-tail"></div>
-        </div>
+        <!-- 使用您提供的小猫形象 -->
+        <pre id="cat">           /\_/\  
+          ( o.o )
+           > ^ <  </pre>
         
         <div class="ghost">
             <div class="ghost-eye left"></div>
