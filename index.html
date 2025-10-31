@@ -35,8 +35,8 @@
             backdrop-filter: blur(10px);
         }
         
-        /* 小狗形象设计 - 漂浮在页面左侧 */
-        #dog {
+        /* 小猫形象设计 - 漂浮在页面左侧 */
+        #cat {
             position: fixed;
             left: 5%;
             top: 50%;
@@ -65,7 +65,7 @@
             75% { transform: translateY(-52%) translateX(5px); }
         }
         
-        .dog-question {
+        .cat-question {
             font-size: 26px;
             margin-bottom: 25px;
             color: #8B4513;
@@ -257,7 +257,7 @@
         
         /* 响应式设计 */
         @media (max-width: 768px) {
-            #dog {
+            #cat {
                 position: relative;
                 left: auto;
                 top: auto;
@@ -278,7 +278,7 @@
                 padding: 20px;
             }
             
-            .dog-question {
+            .cat-question {
                 font-size: 22px;
             }
             
@@ -311,11 +311,11 @@
                 padding: 15px;
             }
             
-            .dog-question {
+            .cat-question {
                 font-size: 20px;
             }
             
-            #dog {
+            #cat {
                 font-size: 16px;
                 padding: 10px;
             }
@@ -335,16 +335,14 @@
         <i>♪</i>
     </div>
     
-    <!-- 小狗放在容器外部，漂浮在页面左侧 -->
-    <pre id="dog">           / \__
-          (    @\____
-           /         O
-          /   (_____/
-         /_____/   U</pre>
+    <!-- 小猫放在容器外部，漂浮在页面左侧 -->
+    <pre id="cat">           /\_/\  
+          ( o.o )
+           > ^ <  </pre>
     
     <div class="container">
-        <!-- 狗狗的提问 -->
-        <div class="dog-question">汪汪~ 姐姐知道今天是什么节日吗？ 🐶</div>
+        <!-- 猫猫的提问 -->
+        <div class="cat-question">喵喵~ 姐姐知道今天是什么节日吗？ (=^･ω･^=)</div>
         
         <div class="ghost">
             <div class="ghost-eye left"></div>
@@ -384,45 +382,16 @@
             const options = document.getElementById('options');
             const message = document.getElementById('message');
             const ghost = document.querySelector('.ghost');
-            const dog = document.getElementById('dog');
+            const cat = document.getElementById('cat');
             
-            // 小狗状态
-            const dogStates = {
-                normal: `           / \\__
-          (    @\\____
-           /         O
-          /   (_____/
-         /_____/   U`,
-                blink: `           / \\__
-          (    -\\____
-           /         O
-          /   (_____/
-         /_____/   U`,
-                sad: `           / \\__
-          (    T\\____
-           /         O
-          /   (_____/
-         /_____/   U`,
-                happy: `           / \\__
-          (    ^\\____
-           /         O
-          /   (_____/
-         /_____/   U`,
-                curious: `           / \\__
-          (    ?\\____
-           /         O
-          /   (_____/
-         /_____/   U`,
-                excited: `           / \\__
-          (    ★\\____
-           /         O
-          /   (_____/
-         /_____/   U`,
-                wagging: `           / \\__
-          (    @\\____
-           /         O
-          /   (_____/~~
-         /_____/   U`
+            // 小猫状态
+            const catStates = {
+                normal: "           /\\_/\\  \n          ( o.o ) \n           > ^ <  ",
+                blink: "           /\\_/\\  \n          ( -.- ) \n           > ^ <  ",
+                sad: "           /\\_/\\  \n          ( T.T ) \n           > ^ <  ",
+                happy: "           /\\_/\\  \n          ( ^.^ ) \n           > ^ <  ",
+                curious: "           /\\_/\\  \n          ( O.O ) \n           > ^ <  ",
+                excited: "           /\\_/\\  \n          ( ★.★ ) \n           > ^ <  "
             };
 
             // 尝试自动播放音乐
@@ -452,19 +421,16 @@
                 question.textContent = "那姐姐告诉我吧～";
                 options.style.display = 'none';
                 inputContainer.style.display = 'block';
-                dog.textContent = dogStates.curious;
+                cat.textContent = catStates.curious;
             });
             
             // 不知道按钮点击事件
             dontKnowBtn.addEventListener('click', function() {
                 question.style.display = 'none';
                 options.style.display = 'none';
-                message.innerHTML = "那就由汪汪我告诉姐姐是什么节日吧～<br><strong>万圣节🎃！</strong><br>姐姐万圣节快乐哦！";
-                dog.textContent = dogStates.wagging;
+                message.innerHTML = "那就由喵喵我告诉姐姐是什么节日吧～<br><strong>万圣节🎃！</strong><br>姐姐万圣节快乐哦！";
+                cat.textContent = catStates.happy;
                 createFallingElements();
-                
-                // 摇尾巴动画
-                startTailWagging();
             });
             
             // 提交按钮点击事件
@@ -485,43 +451,25 @@
                         </div>
                     `;
                     ghost.style.display = 'block';
-                    dog.textContent = dogStates.excited;
+                    cat.textContent = catStates.excited;
                     createFallingElements();
                     
                     // 添加额外的庆祝效果
                     celebrateSuccess();
                 } else {
                     message.textContent = "不对哦，再想想看～";
-                    dog.textContent = dogStates.sad;
+                    cat.textContent = catStates.sad;
                     setTimeout(() => {
                         message.textContent = "";
-                        dog.textContent = dogStates.normal;
+                        cat.textContent = catStates.normal;
                     }, 2000);
                 }
             });
             
-            // 摇尾巴动画
-            function startTailWagging() {
-                let wagCount = 0;
-                const wagInterval = setInterval(() => {
-                    if (wagCount % 2 === 0) {
-                        dog.textContent = dogStates.wagging;
-                    } else {
-                        dog.textContent = dogStates.happy;
-                    }
-                    
-                    wagCount++;
-                    if (wagCount >= 6) {
-                        clearInterval(wagInterval);
-                        dog.textContent = dogStates.happy;
-                    }
-                }, 300);
-            }
-            
             // 成功庆祝效果
             function celebrateSuccess() {
                 // 添加额外的飘落元素
-                const celebrationElements = ['🎉', '✨', '🌟', '💫', '🎊', '🐶', '🦴'];
+                const celebrationElements = ['🎉', '✨', '🌟', '💫', '🎊'];
                 
                 for (let i = 0; i < 20; i++) {
                     setTimeout(() => {
@@ -542,12 +490,12 @@
                     }, i * 200);
                 }
                 
-                // 小狗兴奋跳跃
+                // 小猫兴奋跳跃
                 let jumpCount = 0;
                 const jumpInterval = setInterval(() => {
-                    dog.style.transform = 'translateY(-50%) translateY(-20px)';
+                    cat.style.transform = 'translateY(-50%) translateY(-20px)';
                     setTimeout(() => {
-                        dog.style.transform = 'translateY(-50%)';
+                        cat.style.transform = 'translateY(-50%)';
                     }, 300);
                     
                     jumpCount++;
@@ -555,9 +503,6 @@
                         clearInterval(jumpInterval);
                     }
                 }, 600);
-                
-                // 摇尾巴庆祝
-                startTailWagging();
             }
             
             // 随机颜色生成
@@ -566,24 +511,24 @@
                 return colors[Math.floor(Math.random() * colors.length)];
             }
             
-            // 小狗眨眼动画
-            function startDogBlinking() {
+            // 小猫眨眼动画
+            function startCatBlinking() {
                 setInterval(() => {
-                    if (dog.textContent === dogStates.normal) {
-                        dog.textContent = dogStates.blink;
+                    if (cat.textContent === catStates.normal) {
+                        cat.textContent = catStates.blink;
                         setTimeout(() => {
-                            dog.textContent = dogStates.normal;
+                            cat.textContent = catStates.normal;
                         }, 200);
                     }
                 }, 3000);
             }
             
-            // 开始小狗眨眼
-            startDogBlinking();
+            // 开始小猫眨眼
+            startCatBlinking();
             
             // 创建飘落元素特效
             function createFallingElements() {
-                const elements = ['👻', '🎃', '🍬', '🦇', '🍭', '🐶', '🦴'];
+                const elements = ['👻', '🎃', '🍬', '🦇', '🍭'];
                 
                 for (let i = 0; i < 30; i++) {
                     setTimeout(() => {
