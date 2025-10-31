@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>special</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffcce6 0%, #ff99cc 100%);
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+            color: #8B4513;
+        }
+        
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        /* 小猫形象设计 - 从您提供的代码中提取 */
+        #cat {
+            position: relative;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            white-space: pre;
+            text-align: center;
+            z-index: 10;
+            transition: all 1s ease;
+            font-size: min(4vw, 24px);
+            line-height: 1.2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin: 0 auto 30px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .question {
+            font-size: 24px;
+            color: #8B4513;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.7);
+        }
+        
+        .options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #ff9966;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        button:hover {
+            background-color: #ff7744;
+            transform: translateY(-2px);
+        }
+        
+        .input-container {
+            margin-top: 20px;
+            display: none;
+        }
+        
+        input {
+            padding: 10px;
+            font-size: 18px;
+            border: 2px solid #ff9966;
+            border-radius: 10px;
+            margin-right: 10px;
+            width: 200px;
+        }
+        
+        .submit-btn {
+            background-color: #8B4513;
+        }
+        
+        .ghost {
+            width: 80px;
+            height: 100px;
+            background-color: white;
+            border-radius: 50% 50% 40% 40%;
+            position: absolute;
+            top: 50px;
+            right: 50px;
+            display: none;
+            animation: float 3s ease-in-out infinite;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .ghost-eye {
+            width: 15px;
+            height: 20px;
+            background-color: black;
+            border-radius: 50%;
+            position: absolute;
+            top: 35px;
+        }
+        
+        .ghost-eye.left {
+            left: 20px;
+        }
+        
+        .ghost-eye.right {
+            right: 20px;
+        }
+        
+        .ghost-mouth {
+            width: 30px;
+            height: 15px;
+            border-bottom: 5px solid black;
+            border-radius: 0 0 50% 50%;
+            position: absolute;
+            top: 65px;
+            left: 25px;
+        }
+        
+        .message {
+            font-size: 22px;
+            color: #8B4513;
+            margin-top: 20px;
+            min-height: 60px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.7);
+        }
+        
+        /* 飘落元素 */
+        .falling-element {
+            position: absolute;
+            font-size: 30px;
+            z-index: 5;
+            user-select: none;
+            pointer-events: none;
+            animation: falling linear infinite;
+        }
+        
+        @keyframes falling {
+            0% {
+                transform: translateY(-100px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(calc(100vh + 100px)) rotate(360deg);
+                opacity: 0.7;
+            }
+        }
+        
+        .music-control {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(255,255,255,0.7);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+        
+        .music-control:hover {
+            transform: scale(1.1);
+        }
+        
+        .music-control i {
+            font-size: 24px;
+            color: #ff6699;
+        }
+        
+        .cat-question {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #8B4513;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="music-control" id="musicControl">
+        <i>♪</i>
+    </div>
+    
+    <div class="container">
+        <!-- 猫猫的提问 -->
+        <div class="cat-question">喵喵~ 姐姐知道今天是什么节日吗？ (=^･ω･^=)</div>
+        
+        <!-- 使用字符组成的小猫形象 -->
+        <pre id="cat">           /\_/\  
+          ( o.o )
+           > ^ <  </pre>
+        
+        <div class="ghost">
+            <div class="ghost-eye left"></div>
+            <div class="ghost-eye right"></div>
+            <div class="ghost-mouth"></div>
+        </div>
+        
+        <div class="question" id="question"></div>
+        
+        <div class="options" id="options">
+            <button id="knowBtn">知道</button>
+            <button id="dontKnowBtn">不知道</button>
+        </div>
+        
+        <div class="input-container" id="inputContainer">
+            <input type="text" id="answerInput" placeholder="请输入节日名称">
+            <button class="submit-btn" id="submitBtn">提交</button>
+        </div>
+        
+        <div class="message" id="message"></div>
+    </div>
+
+    <audio id="bgMusic" loop>
+        <source src="https://github.com/2057722964-source/kkz/blob/main/%E9%80%86%E6%97%B6%E9%92%88%E5%90%91%20-%20%E6%99%9A%E6%98%9F.mp3?raw=true" type="audio/mpeg">
+    </audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bgMusic = document.getElementById('bgMusic');
+            const musicControl = document.getElementById('musicControl');
+            const knowBtn = document.getElementById('knowBtn');
+            const dontKnowBtn = document.getElementById('dontKnowBtn');
+            const inputContainer = document.getElementById('inputContainer');
+            const answerInput = document.getElementById('answerInput');
+            const submitBtn = document.getElementById('submitBtn');
+            const question = document.getElementById('question');
+            const options = document.getElementById('options');
+            const message = document.getElementById('message');
+            const ghost = document.querySelector('.ghost');
+            const cat = document.getElementById('cat');
+            
+            // 小猫状态
+            const catStates = {
+                normal: "           /\\_/\\  \n          ( o.o ) \n           > ^ <  ",
+                blink: "           /\\_/\\  \n          ( -.- ) \n           > ^ <  ",
+                sad: "           /\\_/\\  \n          ( T.T ) \n           > ^ <  ",
+                happy: "           /\\_/\\  \n          ( ^.^ ) \n           > ^ <  "
+            };
+
+            // 尝试自动播放音乐
+            bgMusic.volume = 0.3;
+            const playPromise = bgMusic.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                    console.log("自动播放被阻止，需要用户交互");
+                    musicControl.style.display = 'flex';
+                });
+            }
+            
+            // 音乐控制
+            musicControl.addEventListener('click', function() {
+                if (bgMusic.paused) {
+                    bgMusic.play();
+                    musicControl.innerHTML = '<i>♪</i>';
+                } else {
+                    bgMusic.pause();
+                    musicControl.innerHTML = '<i>🔇</i>';
+                }
+            });
+            
+            // 知道按钮点击事件
+            knowBtn.addEventListener('click', function() {
+                question.textContent = "那姐姐告诉我吧～";
+                options.style.display = 'none';
+                inputContainer.style.display = 'block';
+                cat.textContent = catStates.happy;
+            });
+            
+            // 不知道按钮点击事件
+            dontKnowBtn.addEventListener('click', function() {
+                question.style.display = 'none';
+                options.style.display = 'none';
+                message.textContent = "那就由喵喵我告诉姐姐是什么节日吧～万圣节🎃！姐姐万圣节快乐哦！";
+                cat.textContent = catStates.happy;
+                createFallingElements();
+            });
+            
+            // 提交按钮点击事件
+            submitBtn.addEventListener('click', function() {
+                const answer = answerInput.value.trim();
+                if (answer === "万圣节") {
+                    inputContainer.style.display = 'none';
+                    question.style.display = 'none';
+                    message.textContent = "姐姐万圣节快乐哦！";
+                    ghost.style.display = 'block';
+                    cat.textContent = catStates.happy;
+                    createFallingElements();
+                } else {
+                    message.textContent = "不对哦，再想想看～";
+                    cat.textContent = catStates.sad;
+                    setTimeout(() => {
+                        message.textContent = "";
+                        cat.textContent = catStates.normal;
+                    }, 2000);
+                }
+            });
+            
+            // 小猫眨眼动画
+            function startCatBlinking() {
+                setInterval(() => {
+                    if (cat.textContent === catStates.normal) {
+                        cat.textContent = catStates.blink;
+                        setTimeout(() => {
+                            cat.textContent = catStates.normal;
+                        }, 200);
+                    }
+                }, 3000);
+            }
+            
+            // 开始小猫眨眼
+            startCatBlinking();
+            
+            // 创建飘落元素特效
+            function createFallingElements() {
+                const elements = ['👻', '🎃', '🍬', '🦇', '🍭'];
+                
+                for (let i = 0; i < 30; i++) {
+                    setTimeout(() => {
+                        const element = document.createElement('div');
+                        element.className = 'falling-element';
+                        
+                        // 随机选择元素
+                        const randomElement = elements[Math.floor(Math.random() * elements.length)];
+                        element.textContent = randomElement;
+                        
+                        // 随机位置
+                        const x = Math.random() * window.innerWidth;
+                        element.style.left = `${x}px`;
+                        
+                        // 随机大小
+                        const size = Math.random() * 20 + 20;
+                        element.style.fontSize = `${size}px`;
+                        
+                        // 随机动画时长
+                        const duration = Math.random() * 10 + 10;
+                        element.style.animationDuration = `${duration}s`;
+                        
+                        // 随机延迟
+                        const delay = Math.random() * 5;
+                        element.style.animationDelay = `${delay}s`;
+                        
+                        document.body.appendChild(element);
+                        
+                        // 动画结束后移除元素
+                        setTimeout(() => {
+                            if (element.parentNode) {
+                                document.body.removeChild(element);
+                            }
+                        }, (duration + delay) * 1000);
+                    }, i * 500);
+                }
+                
+                // 持续创建新元素
+                setInterval(() => {
+                    const element = document.createElement('div');
+                    element.className = 'falling-element';
+                    
+                    // 随机选择元素
+                    const randomElement = elements[Math.floor(Math.random() * elements.length)];
+                    element.textContent = randomElement;
+                    
+                    // 随机位置
+                    const x = Math.random() * window.innerWidth;
+                    element.style.left = `${x}px`;
+                    
+                    // 随机大小
+                    const size = Math.random() * 20 + 20;
+                    element.style.fontSize = `${size}px`;
+                    
+                    // 随机动画时长
+                    const duration = Math.random() * 10 + 10;
+                    element.style.animationDuration = `${duration}s`;
+                    
+                    document.body.appendChild(element);
+                    
+                    // 动画结束后移除元素
+                    setTimeout(() => {
+                        if (element.parentNode) {
+                            document.body.removeChild(element);
+                        }
+                    }, duration * 1000);
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>
