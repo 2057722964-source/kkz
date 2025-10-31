@@ -240,6 +240,21 @@
             transform: scale(1.1);
         }
         
+        /* 趣味回答样式 */
+        .fun-response {
+            font-size: 24px;
+            color: #ff3366;
+            font-weight: bold;
+            margin-top: 15px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
         /* 响应式设计 */
         @media (max-width: 768px) {
             #cat {
@@ -375,7 +390,8 @@
                 blink: "           /\\_/\\  \n          ( -.- ) \n           > ^ <  ",
                 sad: "           /\\_/\\  \n          ( T.T ) \n           > ^ <  ",
                 happy: "           /\\_/\\  \n          ( ^.^ ) \n           > ^ <  ",
-                curious: "           /\\_/\\  \n          ( O.O ) \n           > ^ <  "
+                curious: "           /\\_/\\  \n          ( O.O ) \n           > ^ <  ",
+                excited: "           /\\_/\\  \n          ( ★.★ ) \n           > ^ <  "
             };
 
             // 尝试自动播放音乐
@@ -412,7 +428,7 @@
             dontKnowBtn.addEventListener('click', function() {
                 question.style.display = 'none';
                 options.style.display = 'none';
-                message.textContent = "那就由喵喵我告诉姐姐是什么节日吧～万圣节🎃！姐姐万圣节快乐哦！";
+                message.innerHTML = "那就由喵喵我告诉姐姐是什么节日吧～<br><strong>万圣节🎃！</strong><br>姐姐万圣节快乐哦！";
                 cat.textContent = catStates.happy;
                 createFallingElements();
             });
@@ -423,10 +439,23 @@
                 if (answer === "万圣节") {
                     inputContainer.style.display = 'none';
                     question.style.display = 'none';
-                    message.textContent = "姐姐万圣节快乐哦！";
+                    message.innerHTML = `
+                        <div style="color: #ff3366; font-weight: bold; font-size: 26px; margin-bottom: 10px;">
+                            BINGO~ 🎉
+                        </div>
+                        <div style="font-size: 22px; margin-bottom: 10px;">
+                            姐姐万圣节快乐！
+                        </div>
+                        <div class="fun-response">
+                            天天开心，事事顺心！✨
+                        </div>
+                    `;
                     ghost.style.display = 'block';
-                    cat.textContent = catStates.happy;
+                    cat.textContent = catStates.excited;
                     createFallingElements();
+                    
+                    // 添加额外的庆祝效果
+                    celebrateSuccess();
                 } else {
                     message.textContent = "不对哦，再想想看～";
                     cat.textContent = catStates.sad;
@@ -436,6 +465,51 @@
                     }, 2000);
                 }
             });
+            
+            // 成功庆祝效果
+            function celebrateSuccess() {
+                // 添加额外的飘落元素
+                const celebrationElements = ['🎉', '✨', '🌟', '💫', '🎊'];
+                
+                for (let i = 0; i < 20; i++) {
+                    setTimeout(() => {
+                        const element = document.createElement('div');
+                        element.className = 'falling-element';
+                        element.textContent = celebrationElements[Math.floor(Math.random() * celebrationElements.length)];
+                        element.style.left = `${Math.random() * window.innerWidth}px`;
+                        element.style.fontSize = `${Math.random() * 25 + 25}px`;
+                        element.style.animationDuration = `${Math.random() * 8 + 8}s`;
+                        element.style.color = getRandomColor();
+                        document.body.appendChild(element);
+                        
+                        setTimeout(() => {
+                            if (element.parentNode) {
+                                document.body.removeChild(element);
+                            }
+                        }, 15000);
+                    }, i * 200);
+                }
+                
+                // 小猫兴奋跳跃
+                let jumpCount = 0;
+                const jumpInterval = setInterval(() => {
+                    cat.style.transform = 'translateY(-50%) translateY(-20px)';
+                    setTimeout(() => {
+                        cat.style.transform = 'translateY(-50%)';
+                    }, 300);
+                    
+                    jumpCount++;
+                    if (jumpCount >= 5) {
+                        clearInterval(jumpInterval);
+                    }
+                }, 600);
+            }
+            
+            // 随机颜色生成
+            function getRandomColor() {
+                const colors = ['#ff3366', '#ff6633', '#ff33cc', '#33ff66', '#3366ff', '#ff33ff'];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
             
             // 小猫眨眼动画
             function startCatBlinking() {
@@ -523,10 +597,10 @@
                     }, duration * 1000);
                 }, 2000);
                 
-                // 10秒后停止创建新元素
+                // 15秒后停止创建新元素
                 setTimeout(() => {
                     clearInterval(fallingInterval);
-                }, 10000);
+                }, 15000);
             }
         });
     </script>
