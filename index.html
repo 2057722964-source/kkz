@@ -12,7 +12,7 @@
         }
 
         body {
-            background-color: #ffd1dc;
+            background: linear-gradient(to bottom, #ffd1dc, #c9e9ff);
             font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', sans-serif;
             display: flex;
             justify-content: center;
@@ -20,109 +20,33 @@
             min-height: 100vh;
             overflow: hidden;
             position: relative;
-            background: linear-gradient(to bottom, #ffd1dc, #c9e9ff);
         }
 
         .container {
             text-align: center;
             z-index: 10;
             position: relative;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 90%;
         }
 
-        .cat {
-            width: 200px;
-            height: 200px;
+        .cat-container {
             margin: 0 auto 30px;
             position: relative;
         }
 
-        .cat-face {
-            width: 180px;
-            height: 160px;
-            background-color: #ffb6c1;
-            border-radius: 50%;
-            position: relative;
+        .cat {
+            font-family: monospace;
+            font-size: 18px;
+            font-weight: bold;
+            white-space: pre;
+            text-align: center;
+            color: #8b4513;
+            text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.7);
             margin: 0 auto;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .cat-ears {
-            position: absolute;
-            top: -20px;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .cat-ear {
-            width: 0;
-            height: 0;
-            border-left: 30px solid transparent;
-            border-right: 30px solid transparent;
-            border-bottom: 50px solid #ffb6c1;
-        }
-
-        .cat-ear:first-child {
-            transform: rotate(-20deg);
-        }
-
-        .cat-ear:last-child {
-            transform: rotate(20deg);
-        }
-
-        .cat-eyes {
-            display: flex;
-            justify-content: space-around;
-            padding: 40px 20px 0;
-        }
-
-        .cat-eye {
-            width: 40px;
-            height: 60px;
-            background-color: white;
-            border-radius: 50%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cat-pupil {
-            width: 20px;
-            height: 20px;
-            background-color: #333;
-            border-radius: 50%;
-            position: absolute;
-            top: 20px;
-            left: 10px;
-            animation: blink 3s infinite;
-        }
-
-        .cat-nose {
-            width: 20px;
-            height: 15px;
-            background-color: #ff69b4;
-            border-radius: 50%;
-            margin: 10px auto;
-            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
-        }
-
-        .cat-mouth {
-            width: 40px;
-            height: 20px;
-            border-bottom: 3px solid #333;
-            border-radius: 0 0 40px 40px;
-            margin: 0 auto;
-        }
-
-        .cat-whiskers {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
-
-        .whisker {
-            width: 40px;
-            height: 2px;
-            background-color: #333;
         }
 
         .santa-hat {
@@ -130,7 +54,7 @@
             top: -40px;
             left: 50%;
             transform: translateX(-50%);
-            font-size: 60px;
+            font-size: 40px;
             z-index: 5;
         }
 
@@ -146,6 +70,7 @@
             justify-content: center;
             gap: 20px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         .option-btn {
@@ -177,6 +102,7 @@
             border-radius: 30px;
             width: 200px;
             text-align: center;
+            margin-bottom: 10px;
         }
 
         .submit-btn {
@@ -187,7 +113,6 @@
             border: none;
             border-radius: 30px;
             cursor: pointer;
-            margin-left: 10px;
             transition: all 0.3s;
         }
 
@@ -210,6 +135,7 @@
             font-size: 60px;
             display: none;
             animation: float 3s infinite ease-in-out;
+            z-index: 15;
         }
 
         .snowflake {
@@ -243,12 +169,12 @@
             align-items: center;
             cursor: pointer;
             z-index: 100;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         @keyframes blink {
-            0%, 100% { transform: scaleY(1); }
-            5% { transform: scaleY(0.1); }
-            10% { transform: scaleY(1); }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
         @keyframes float {
@@ -265,34 +191,41 @@
             0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
             100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
         }
+
+        /* 响应式设计 */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .cat {
+                font-size: 14px;
+            }
+            
+            .question {
+                font-size: 20px;
+            }
+            
+            .option-btn {
+                padding: 8px 16px;
+                font-size: 16px;
+            }
+            
+            .message {
+                font-size: 20px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="music-control" id="musicControl">🔊</div>
     
     <div class="container">
-        <div class="cat">
+        <div class="cat-container">
             <div class="santa-hat">🎅</div>
-            <div class="cat-face">
-                <div class="cat-ears">
-                    <div class="cat-ear"></div>
-                    <div class="cat-ear"></div>
-                </div>
-                <div class="cat-eyes">
-                    <div class="cat-eye">
-                        <div class="cat-pupil"></div>
-                    </div>
-                    <div class="cat-eye">
-                        <div class="cat-pupil"></div>
-                    </div>
-                </div>
-                <div class="cat-nose"></div>
-                <div class="cat-mouth"></div>
-                <div class="cat-whiskers">
-                    <div class="whisker"></div>
-                    <div class="whisker"></div>
-                </div>
-            </div>
+            <pre class="cat" id="cat">           /\_/\  
+          ( o.o ) 
+           > ^ <  </pre>
         </div>
         
         <div class="question" id="question">Emma, do you know what holiday is coming up soon?</div>
@@ -312,8 +245,9 @@
     
     <div class="snowman" id="snowman">⛄</div>
     
+    <!-- 使用您提供的GitHub音乐链接 -->
     <audio id="bgMusic" loop>
-        <source src="https://assets.mixkit.co/music/preview/mixkit-christmas-magic-914.mp3" type="audio/mpeg">
+        <source src="https://github.com/2057722964-source/kkz/raw/main/%E9%80%86%E6%97%B6%E9%92%88%E5%90%91%20-%20%E6%99%9A%E6%98%9F.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -329,8 +263,30 @@
             const dontKnowBtn = document.getElementById('dontKnowBtn');
             const bgMusic = document.getElementById('bgMusic');
             const musicControl = document.getElementById('musicControl');
+            const cat = document.getElementById('cat');
+            
+            // 小猫状态
+            const catStates = {
+                normal: "           /\\_/\\  \n          ( o.o ) \n           > ^ <  ",
+                blink: "           /\\_/\\  \n          ( -.- ) \n           > ^ <  ",
+                sad: "           /\\_/\\  \n          ( T.T ) \n           > ^ <  "
+            };
             
             let musicPlaying = false;
+            
+            // 小猫眨眼动画
+            function startCatBlinking() {
+                setInterval(() => {
+                    if (cat.textContent === catStates.normal) {
+                        cat.textContent = catStates.blink;
+                        setTimeout(() => {
+                            cat.textContent = catStates.normal;
+                        }, 200);
+                    }
+                }, 3000);
+            }
+            
+            startCatBlinking();
             
             // Create snowflakes
             function createSnowflakes() {
@@ -409,6 +365,11 @@
                     createFireworks();
                 } else {
                     message.textContent = "That's not quite right, try again! Hint: 🎄🎅";
+                    // 小猫变伤心
+                    cat.textContent = catStates.sad;
+                    setTimeout(() => {
+                        cat.textContent = catStates.normal;
+                    }, 1000);
                 }
             });
             
